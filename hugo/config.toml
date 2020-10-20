@@ -1,0 +1,15 @@
+baseURL = "https://www.taccoform.com/"
+languageCode = "en-us"
+title = "Taccoform"
+theme = "m10c"
+
+[params]
+  author = "Joe Perez"
+  description = "Tacos+Terraform"
+ # avatar = "static/avatar.jpg"
+  [[params.social]]
+    name = "github"
+    url = "https://github.com/jperez3"
+  [[params.social]]
+    name = "twitter"
+    url = "https://twitter.com/taccoform"

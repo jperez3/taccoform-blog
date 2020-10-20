@@ -1,0 +1,18 @@
+#cloud-config
+
+repo_update: true
+repo_upgrade: all
+
+packages:
+    - git
+    - docker.io
+
+runcmd:
+    - [hostname, ${hostname}]
+    - [systemctl, start, docker]
+    - [systemctl, enable, docker]    
+    - [add-apt-repository, universe]
+    - [apt, install, python3-pip, -y]
+    - [pip3, install, docker-compose]
+    - [git, clone, https://github.com/jperez3/taccoform-blog.git]
+    - [docker-compose, -f, taccoform-blog/docker-compose.yml, -d]
