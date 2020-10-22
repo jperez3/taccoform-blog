@@ -1,3 +1,9 @@
++++
+title =  "Taccoform Tutorial Series - Part I"
+tags = ["terraform", "tutorial", "digitalocean", "terraform13"]
+date = "2020-10-21"
++++
+
 
 # Overview
 
@@ -124,6 +130,23 @@ resource "digitalocean_droplet" "web" {
 | size                 | a unique code provided by DigitalOcean to tell terraform how big of a droplet needs to be provisioned. The size defined is the smallest server offering by DigitalOcean and is $5/month. We're going to destroy the droplet at the end of the tutorial, so your bill will be less than that. (required) |
 | user_data            | the set of instructions on what to do after the operating system has been installed. Of note here is that we're using the template function to call the file from the `templates` folder and pass through the `hostname` variable.       |
 
+
+After defining the droplet, you want to add an `ouput` for the droplet's public IP address. This will make it easy for you to retrieve the IP address to plug into your browser.
+
+```hcl
+output "droplet_public_ip" {
+  value = digitalocean_droplet.web.ipv4_address
+}
+```
+
+| Component                             | Description                                                                                 |
+| :------------------------------------ | :------------------------------------------------------------------------------------------ |
+| output                                | this tells terraform that you want to display a parameter or variable                       |
+| droplet_public_ip                     | a unique name given by you to make it easy to understand what is being displayed            |
+| value                                 | the key used to define what your output will be                                             |
+| digitalocean_droplet.web.ipv4_address | an available attribute from the droplet you defined earlier                                 |
+
+_Note: Attributes are unique outputs created by the people who maintain their respective terraform providers. More attributes for the DigitalOcean droplet resource can be found [here](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/droplet#attributes-reference)._
 
 
 ### Terraform Installation and Commands
