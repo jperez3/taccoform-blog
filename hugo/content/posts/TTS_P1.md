@@ -269,7 +269,7 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 Changes to Outputs:
   + droplet_public_ip = (known after apply)
 ```
-  - You can now see what terraform will be provisoining
+  - You can now see what terraform will be provisioning
   - The `Plan` line is key for deciding if terraform is going to perform the changes you're expecting.
   - It's always a good idea to review the plan prior to executing the change
 
