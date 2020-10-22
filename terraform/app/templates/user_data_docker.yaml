@@ -14,5 +14,6 @@ runcmd:
     - [add-apt-repository, universe]
     - [apt, install, python3-pip, -y]
     - [pip3, install, docker-compose]
-    - [git, clone, https://github.com/jperez3/taccoform-blog.git]
-    - [docker-compose, -f, taccoform-blog/docker-compose.yml, -d]
+    - [git, clone, https://github.com/jperez3/taccoform-blog.git, /opt/taccoform-blog]
+    - [cd, /opt/taccoform-blog]
+    - [docker-compose, up, -d]

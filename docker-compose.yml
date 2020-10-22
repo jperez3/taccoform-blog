@@ -4,7 +4,7 @@ services:
     container_name: blog
     restart: always
     image: klakegg/hugo:0.74.3
-    command: server
+    command: server --appendPort=false
     volumes:
       - "./hugo:/src"
     ports:
