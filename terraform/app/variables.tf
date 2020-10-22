@@ -1,5 +1,4 @@
 variable "env" {
-
     description = "unique environment name"
     default     = "prod"
 }
