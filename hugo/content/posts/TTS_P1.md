@@ -54,9 +54,9 @@ Terraform file basics:
 
 You don't want to post your digital personal access token on github, so I've added `secrets.tf` to the `.gitignore` file. If you're working out of your own repo, please add `secrets.tf` to your `.gitignore` file.
 
-1. Navigate to `t1`
-1. Create a new file called `secrets.tf`
-2. In the `secrets.tf` file, create a new terraform variable for your DigitalOcean key:
+1. Navigate to `tutorial-1>app`
+2. Create a new file called `secrets.tf`
+3. In the `secrets.tf` file, create a new terraform variable for your DigitalOcean key:
 
 ```hcl
 variable "do_token" {
@@ -166,7 +166,9 @@ _Note: Attributes are unique outputs created by the people who maintain their re
 2. Install Chocolatey: `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))`
 3. Install Terraform: `choco install terraform`
 
-* Verify terraform has been installed by running `terraform version`
+
+**Install Verification**
+1. Verify terraform has been installed by running `terraform version`
   - Sample output:
 
 ```hcl
@@ -189,7 +191,9 @@ _Note: you should be running Terraform 0.13.x_
 
 #### Run Terraform
 
-* Run `terraform init`
+
+1. In terminal, navigate to `tutorial-1>app` in the `taccoform-tutorial` repo that you forked and cloned
+2. Run `terraform init`
   - Your output should look like the sample below:
 
 ```hcl
@@ -209,7 +213,7 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-* Now run `terraform plan`
+3. Now run `terraform plan`
   - Sample output below: 
 
 ```hcl
@@ -269,7 +273,7 @@ Changes to Outputs:
   - The `Plan` line is key for deciding if terraform is going to perform the changes you're expecting.
   - It's always a good idea to review the plan prior to executing the change
 
-* After reviewing the plan's output, run `terraform apply`
+4. After reviewing the plan's output, run `terraform apply`
   - You will see a similar output to the plan and will be prompted to confirm the change:
 
 ```hcl
@@ -285,7 +289,7 @@ Do you want to perform these actions?
   Enter a value: 
 ```
 
-* If it all looks good, confirm by entering `yes` and pressing enter
+5. If it all looks good, confirm by entering `yes` and pressing enter
   - Sample output below
 
 ```hcl
@@ -321,7 +325,7 @@ droplet_public_ip = 1.2.3.4
 
 After you've shown a loved one and they say "that's very nice, but I'm busy right now", it's time to destroy the droplet.
 
-* Run `terraform destroy`
+1. Run `terraform destroy`
   - You should see something similar to the output below:
 
 ```hcl
@@ -374,8 +378,9 @@ Do you really want to destroy all resources?
 
   Enter a value: 
 ```
-* The output shows you what will be destroyed. We're expecting to destroy 1 droplet resource and that's what it is telling us. 
-* Type `yes` and press enter to start the destruction 
+_The output shows you what will be destroyed. We're expecting to destroy 1 droplet resource and that's what it is telling us._ 
+
+2. Type `yes` and press enter to start the destruction 
   - Your output should be similar to the output below:
 
 ```hcl
