@@ -4,7 +4,7 @@ services:
     container_name: blog
     restart: always
     image: klakegg/hugo:0.74.3
-    command: server --appendPort=false
+    command: server --appendPort=false -b www.taccoform.com
     volumes:
       - "./hugo:/src"
     ports:
