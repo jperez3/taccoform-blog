@@ -2,6 +2,7 @@ baseURL = "https://www.taccoform.com/"
 languageCode = "en-us"
 title = "Taccoform"
 theme = "m10c"
+googleAnalytics = "UA-181070094-1"
 
 [params]
   author = "Joe Perez"
