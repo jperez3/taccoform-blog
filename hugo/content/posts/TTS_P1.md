@@ -9,7 +9,7 @@ date = "2020-10-21"
 
 You've reviewed the [CNCF Landscape](https://landscape.cncf.io/) and have decided that you need to start somewhere. You close your eyes and randomly click one of the logos. You open your eyes and see a weird `T` logo with the name "Hashicorp Terraform." This is how I got started with Terraform. 
 
-After 4 years of mostly learning what not to do, I decided to help others on their cloud journey. If you know how to use github and a little bit of bash, I will teach you how to provision servers in the cloud with Infrastructure as code. We're going to be working with DigitalOcean, but the principles learned here can be used across all cloud providers. This is the first entry in the Taccoform Tutorial Series. 
+After 4 years of mostly learning what not to do, I decided to help others on their cloud journey. If you know how to use github and a little bit of bash, I will teach you how to provision servers in the cloud with Infrastructure as Code. We're going to be working with DigitalOcean, but the principles learned here can be used across all cloud providers. This is the first entry in the Taccoform Tutorial Series. 
 
 
 ## Lesson 1
