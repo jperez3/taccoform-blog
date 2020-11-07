@@ -26,6 +26,7 @@ resource "digitalocean_certificate" "www" {
 resource "digitalocean_loadbalancer" "web" {
   name   = "${var.droplet_name}-lb"
   region = var.region
+  redirect_http_to_https = true
 
   forwarding_rule {
     entry_port     = var.lb_entry_port
@@ -33,6 +34,16 @@ resource "digitalocean_loadbalancer" "web" {
 
     target_port     = var.lb_target_port
     target_protocol = var.lb_target_protocol
+
+    certificate_id = digitalocean_certificate.www.id
+  }
+
+    forwarding_rule {
+    entry_port     = 80
+    entry_protocol = "http"
+
+    target_port     = 80
+    target_protocol = "http"
 
     certificate_id = digitalocean_certificate.www.id
   }
