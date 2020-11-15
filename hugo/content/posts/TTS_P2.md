@@ -1,9 +1,13 @@
-<!-- +++
++++
 title =  "Taccoform Tutorial Series - Part II"
 tags = ["terraform", "tutorial", "digitalocean", "terraform13", "count", "for_each", "looping"]
 date = "2020-11-07"
-+++ -->
+draft = true
++++
 
+
+![tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p2/header.jpg)
+<span>Photo by <a href="https://unsplash.com/@profxavier26?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Xavier crook</a> on <a href="https://unsplash.com/s/photos/tacos?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 
 # Overview
 

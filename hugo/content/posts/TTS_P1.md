@@ -2,7 +2,12 @@
 title =  "Taccoform Tutorial Series - Part I"
 tags = ["terraform", "tutorial", "digitalocean", "terraform13"]
 date = "2020-10-21"
+
 +++
+
+
+![tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+<span>Photo by <a href="https://unsplash.com/@tkaiser?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">T. Kaiser</a> on <a href="https://unsplash.com/s/photos/taco?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 
 
 # Overview
@@ -398,6 +403,8 @@ After the `terraform destroy` has finished, don't forget to commit your changes 
 
 
 ### In Review
+
+![droplet_creation_with_terraform](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/droplet_creation_with_terraform.png)
 
 * Set up your DigitalOcean account
 * Configured a droplet SSH key
