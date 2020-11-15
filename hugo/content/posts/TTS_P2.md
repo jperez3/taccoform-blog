@@ -2,7 +2,6 @@
 title =  "Taccoform Tutorial Series - Part II"
 tags = ["terraform", "tutorial", "digitalocean", "terraform13", "count", "for_each", "looping"]
 date = "2020-11-07"
-draft = true
 +++
 
 
