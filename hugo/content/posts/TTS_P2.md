@@ -7,7 +7,6 @@ draft = true
 
 
 ![tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p2/header.jpg)
-<span>Photo by <a href="https://unsplash.com/@profxavier26?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Xavier crook</a> on <a href="https://unsplash.com/s/photos/tacos?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 
 # Overview
 
@@ -570,10 +569,16 @@ droplet_public_ips = {
 
 ## In Review
 
+![creating_multiple_droplets_with_terraform](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p2/creating_multiple_droplets_with_terraform.png)
+
 * You used `count` and `for_each` to provision multiple droplets 
 * You learned how to manage droplets when using `count` and `for_each`
 * You created DRY Terraform code
 
-## In conclusion
 
-You have several ways to create multiple resources. I would recommend testing `count` and `for_each` when you are creating resources in terraform. You may also find scenarios where **both** options make things harder to understand/troubleshoot and **not** using loops is the best way to move forward.   
+You have several ways to create multiple similar resources at your disposal. I would recommend testing `count` and `for_each` when you are creating resources in terraform. You may also find scenarios where **both** options make things harder to understand/troubleshoot and **not** using loops is the best way to move forward. 
+
+
+
+---
+_As always, feel free to reach out on twitter via [@taccoform](https://twitter.com/taccoform) for questions and/or feedback on this post_

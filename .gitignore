@@ -32,3 +32,5 @@ override.tf.json
 
 # Terraform tutorial
 secrets.tf
+
+docs/diagrams_as_code/*.png
