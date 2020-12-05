@@ -38,7 +38,7 @@ resource "digitalocean_loadbalancer" "web" {
     certificate_id = digitalocean_certificate.www.id
   }
 
-    forwarding_rule {
+  forwarding_rule {
     entry_port     = 80
     entry_protocol = "http"
 
