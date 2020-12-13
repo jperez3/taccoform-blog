@@ -1,22 +1,39 @@
 +++
 title =  "Taccoform Tutorial Series - Part III"
 tags = ["terraform", "tutorial", "digitalocean", "terraform13", "variables", "load_balancer"]
-date = "2020-11-09"
+date = "2020-12-13"
 draft = true
 +++
 
 
+![tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p3/header.jpg)
+
 # Overview
 
+Greetings Taccoformers! In the previous tutorial you learned how to create multiple resources with `count` and `for_each`. In _Part III_ of the _Taccoform Tutorial Series_, we'll focus on creating variables to keep our terraform code easy to work on and `DRY` (Don't Repeat Yourself).  
 
 # Lesson 3
+
+Today's lesson will cover:
+* Creating variable definitions
+* Variable naming
+* How to organize variables
+* Using variables in resource definitions
+* Creating a load balancer
+* Using variables across multiple resource definitions
+* How to override a variables default value
+
+
 
 
 ### Pre-Flight
 
+1. Navigate to the `tutorial-3>app` folder in the `taccoform-tutorial` repo that you forked in _Part I_ of the _Taccoform Tutorial Series_. If you don't see the folder, you may need to update your [fork](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
+2. Copy your `secrets.tf` file from `tutorial-2>app` to `tutorial-3>app`
+
 ### Variable creation
 
-##### anatomy of a variable
+##### The Anatomy of a Variable
 
 ```hcl
 variable "env" {
@@ -72,7 +89,7 @@ variable "droplet_names" {
 }
 ```
 
-### Variable naming
+### Variable Naming
 
 Variable naming isn't always easy, but there are a couple things that I've picked up on:
 
@@ -103,7 +120,7 @@ resource "digitalocean_droplet" "web" {
 
 }
 
-resource "digitalocean_loadbalancer" "web" {
+resource "digitalocean_loadbalancer" "public" {
 
   ...
   region = var.region
@@ -124,9 +141,9 @@ resource "digitalocean_droplet" "web" {
 
 }
 
-resource "digitalocean_loadbalancer" "web" {
+resource "digitalocean_loadbalancer" "public" {
 
-  name   = "lb-${var.service}-${var.env}"
+  name   = "pub-lb-${var.service}-${var.env}"
   region = var.region
   ...
   
@@ -134,7 +151,7 @@ resource "digitalocean_loadbalancer" "web" {
 ```
 _The quotes/`$`/curly brackets are necessary because some variable interpolation is happening prior to passing the value to the resource definition's `name` parameter. `droplet_image` and `region` are passed to the resource definition "as-is", so they don't require the extra formatting. You might wonder why we don't just set the interpolation (`"lb-${var.service}-${var.env}"`) as the `default` when creating the variable, but terraform doesn't allow you to do this in regular variables._ 
 
-### Variable organization
+### Variable Organization
 
 * Start this section by opening your fork of the `taccoform-tutorial` repo and browsing to the `tutorial-3/app.` Copy your `secrets.tf` from the previous tutorial's folder. Open the `droplet.tf` file, uncomment the resource definition (and `output`) which uses `count` and comment out the resource definition (and `output`) that uses `for_each`. Your new `droplet.tf` file should look like this:
 
@@ -184,7 +201,7 @@ output "droplet_public_ips" {
 
 
 
-#### variable file organization
+#### Variable File Organization
 
 * You can put your variable definitions in any `.tf` and the usual _"Hello World"_ Terraform tutorials will usually tell you to create two files. A `main.tf` file for all of your resource definitions and a `variables.tf` file for all of your variable definitions. Don't do this. It's not that you can't fix it later, but the organization in advance will help you a ton with understanding the components of your terraform and there are several advantages that will come later when you are troubleshooting your terraform and/or when you start to create reusable terraform modules. I like to separate resources by their type (eg. `droplets.tf`) and accompanied by a variable file (eg. `droplets_variables.tf`). 
 
@@ -324,12 +341,12 @@ variable "region" {
 ```
 
 
-#### Using variables in resource definitions
+#### Using Variables in Resource Definitions
 
 * Now that you've defined variables, it's time to plug them into a resource definition.
 
 1. Open the `droplet.tf` file and scroll down to the `count` parameter in the `droplet` resource definition
-2. Replace the `count` value of `2` to the `droplet_count` variable you previously created. To call a variable, you need to preflix it with `var.`. In this case, it would be `var.droplet_count` and it would look like this:
+2. Replace the `count` value of `2` to the `droplet_count` variable you previously created. To call a variable, you need to use `.var` as a prefix. In this case, it would be `var.droplet_count` and it would look like this:
 
 `droplet.tf`
 ```hcl
@@ -372,7 +389,9 @@ resource "digitalocean_droplet" "web" {
 * And now you're saying to yourself, _"Ok I'm exactly where I was before with the terraform provisioning, I don't think it's worth all that extra work."_ I don't blame that line of thought. Where this becomes interesting is when you're managing more resources and troubleshooting.
 
 
-#### Adding a load balancer
+#### Adding a Load Balancer
+
+* At some point your application will become super popular and you're on your way to becoming a millionaire, but first you need to make sure your application can scale. Adding a load balancer in front of your droplets will allow you to add more droplets as your traffic increases. In the default configuration, a load balancer will send traffic in a _round-robin_ fashion to each of your droplets. If you configure _round-robin_ with three droplets, the load balancer will send the first request to the first droplet, second request to the second droplet, third request to the third droplet, fourth request to the first droplet, fifth request to the second droplet, etc, etc. 
 
 1. Create `loadbalancer.tf` and `loadbalancer_variables.tf` in `tutorial-3>app`
   - Your directory should look like this now:
@@ -662,11 +681,9 @@ _Now run `terraform plan -var-file="custom.tfvars"` and review how it changes th
 
 
 
-
-
 ## In Review
 
-MAKE A DIAGRAM FOR HERE
+![load_balanced_application_on_droplets](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p3/load_balanced_application_on_droplets.png)
 
 * You've learned how to create variables and the different types of variables you can define
 * You learned how to use variables in resource definitions
@@ -679,3 +696,9 @@ MAKE A DIAGRAM FOR HERE
 ## Conclusion 
 
 * Variables can be difficult to name and they eat up a bunch of your time, but it's a worthy investment in the long run. What you have now is reuseable code which can be copied to other terraform workspaces. You are also a few short steps away from creating a terraform module.
+
+
+
+
+---
+_As always, feel free to reach out on twitter via [@taccoform](https://twitter.com/taccoform) for questions and/or feedback on this post_
