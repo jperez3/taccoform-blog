@@ -2,7 +2,6 @@
 title =  "Taccoform Tutorial Series - Part III"
 tags = ["terraform", "tutorial", "digitalocean", "terraform13", "variables", "load_balancer"]
 date = "2020-12-13"
-draft = true
 +++
 
 
