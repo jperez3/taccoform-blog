@@ -534,7 +534,7 @@ Terraform will perform the following actions:
       + locked               = (known after apply)
       + memory               = (known after apply)
       + monitoring           = false
-      + name                 = "web0-web-prod"
+      + name                 = "web0-burrito-prod"
       + price_hourly         = (known after apply)
       + price_monthly        = (known after apply)
       + private_networking   = (known after apply)
@@ -567,7 +567,7 @@ Terraform will perform the following actions:
       + locked               = (known after apply)
       + memory               = (known after apply)
       + monitoring           = false
-      + name                 = "web1-web-prod"
+      + name                 = "web1-burrito-prod"
       + price_hourly         = (known after apply)
       + price_monthly        = (known after apply)
       + private_networking   = (known after apply)
@@ -593,7 +593,7 @@ Terraform will perform the following actions:
       + enable_proxy_protocol    = false
       + id                       = (known after apply)
       + ip                       = (known after apply)
-      + name                     = "pub-lb-web-prod"
+      + name                     = "pub-lb-burrito-prod"
       + redirect_http_to_https   = false
       + region                   = "sfo2"
       + status                   = (known after apply)

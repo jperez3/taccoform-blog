@@ -33,6 +33,7 @@ override.tf.json
 # Terraform tutorial
 secret.tf
 secrets.tf
+.terraform.lock.hcl
 
 
 docs/diagrams_as_code/*.png
