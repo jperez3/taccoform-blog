@@ -23,6 +23,14 @@ Whether you're a terraform beginner or seasoned veteran, troubleshooting errors 
 Make sure your provider version is up to date, newer versions might address the problem you're seeing. If you cannot update your provider for whatever reason, check out the _Issues_ section of your provider's repository. Here is an example of a provider's Issues page: [DigitalOcean Terraform Provider](https://github.com/digitalocean/terraform-provider-digitalocean/issues). Searching the open and closed issues might help your troubleshooting efforts.
 
 
+##### Additional Resources
+Common Provider Documentation:
+* [AWS](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+* [Azure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs)
+* [DigitalOcean](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs)
+* [GCP](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
+
+
 ### 4. Use Terraform outputs
 
 Terraform outputs give you a way to see things like public IPs after a `terraform apply`, but it's also a good tool for helping you troubleshoot your code. There have been plenty of times where I've tried to pass the wrong variable type or attribute to another resource (or module) and terraform doesn't give you a great error message. You can verify a resource's available attribute's by visiting the documentation for your specific provider. Here is an example of the available attributes for a DigitalOcean [droplet](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/droplet#attributes-reference). If you wanted to pass the IPv4 address of a droplet to another resource, you could verify it by checking the output 
@@ -34,6 +42,10 @@ output "droplet_public_ip" {
 ```
 
 One important thing to note with terraform outputs is that new outputs won't display until you've ran a `terraform apply` which may or may not be a problem with the current state of your terraform
+
+##### Additional Resources
+* [Terraform Command - output](https://www.terraform.io/docs/commands/output.html)
+* [Terraform output values](https://www.terraform.io/docs/configuration/outputs.html)
 
 ### 3. Use Terraform console
 
@@ -52,6 +64,10 @@ Terraform console is probably the most under-utilized tool in your toolbelt, but
 
 Testing in `terraform console` is a million times quicker than iterating over terraform plan/apply
 
+##### Additional Resources
+
+* [Terraform Command: console](https://www.terraform.io/docs/commands/console.html)
+
 
 ### 2. Don't use Terraform
 
@@ -67,6 +83,12 @@ Terraform code gets complex REAL QUICK. The best way to help you understand your
 * The naming isn't set in stone, you can change them at any time as long as you keep the `.tf` extension. 
 * You can organize your resources into multiple files RIGHT NOW. You still want to be careful when copying existing resources into new files, but moving the resources will not trigger terraform changes.
 * Use multiple terraform statefiles/workspaces, don't put all of your resources in a single statefile. Having unrelated resources in the same statefile increases the blast radius when things go wrong and can halt all terraform work until the problem is addressed. 
+
+
+##### Additional Resources
+
+* [HashiCorp Learn - Separate Development and Production Environments](https://learn.hashicorp.com/tutorials/terraform/organize-configuration)
+
 
 
 
