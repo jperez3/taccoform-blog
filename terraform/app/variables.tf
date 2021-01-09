@@ -1,11 +1,11 @@
 variable "env" {
-    description = "unique environment name"
-    default     = "prod"
+  description = "unique environment name"
+  default     = "prod"
 }
 
 variable "service" {
-    description = "unique service name"
-    default     = "burrito"
+  description = "unique service name"
+  default     = "burrito"
 }
 
 variable "do_token" {

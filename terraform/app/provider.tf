@@ -13,7 +13,7 @@ terraform {
 terraform {
   required_providers {
     digitalocean = {
-      source = "digitalocean/digitalocean"
+      source  = "digitalocean/digitalocean"
       version = "~> 1.22.2"
     }
   }
@@ -25,5 +25,5 @@ provider "digitalocean" {
   token = var.do_token
 
   spaces_access_id  = var.do_access_id
-  spaces_secret_key = var.do_secret_key  
+  spaces_secret_key = var.do_secret_key
 }

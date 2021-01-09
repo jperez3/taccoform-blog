@@ -24,8 +24,8 @@ resource "digitalocean_certificate" "www" {
 #################
 
 resource "digitalocean_loadbalancer" "web" {
-  name   = "${var.droplet_name}-lb"
-  region = var.region
+  name                   = "${var.droplet_name}-lb"
+  region                 = var.region
   redirect_http_to_https = true
 
   forwarding_rule {
