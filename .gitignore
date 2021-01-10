@@ -34,6 +34,8 @@ override.tf.json
 secret.tf
 secrets.tf
 .terraform.lock.hcl
+.terraform.d
+.terraform
 
 
 docs/diagrams_as_code/*.png
