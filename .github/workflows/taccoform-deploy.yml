@@ -84,7 +84,11 @@ jobs:
 
       - name: Terraform Taint web droplet for rebuild
         if:  github.ref == 'refs/heads/master' && github.event_name == 'push'
+<<<<<<< HEAD
         run: terraform -chdir=$TF_DIR taint digitalocean_droplet.web[0]
+=======
+        run: terraform taint digitalocean_droplet.web[0] $TF_DIR_APP
+>>>>>>> master
         env:
           TF_VAR_do_token: ${{ secrets.TF_VAR_DO_TOKEN }}
           TF_VAR_do_access_id: ${{ secrets.DO_ACCESS_ID }}
