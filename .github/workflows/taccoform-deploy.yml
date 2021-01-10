@@ -30,7 +30,7 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform -chdir=$TF_DIR fmt -check
+        run: terraform fmt -check $TF_DIR
         env:
           TF_VAR_do_token: ${{ secrets.TF_VAR_DO_TOKEN }}
           TF_VAR_do_access_id: ${{ secrets.DO_ACCESS_ID }}
