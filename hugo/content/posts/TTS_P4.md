@@ -16,8 +16,8 @@ At some point you'll want to allow others to build off of the terraform work you
 
 In this post we'll go over:
 * What's a statefile? 
-* How to configure statefile in terraform
 * Where to host your statefile
+* How to configure `statefile` in Terraform
 
 
 ### What's a statefile? 
@@ -29,7 +29,7 @@ In Terraform, a statefile is a file which is used to store information about wha
 
 When you start a new terraform workspace and don't specify a `backend` configuration, terraform will create a `statefile` in the working directory. This will help you get up and running, but it is not ideal. Exposed secrets can live in the `statefile`, so you shouldn't check it into git and other people who check out your code won't have the `statefile` to help terraform reconsile the differences.
 
-### Statefile Hosting Options
+### Where to host your statefile
 
 To allow others and/or automation to use the same `statefile`, it needs to be hosted somewhere that multiple individuals can access it. 
 
@@ -41,11 +41,94 @@ To allow others and/or automation to use the same `statefile`, it needs to be ho
   * managing the locking mechanism for the `statefile` so that two or more people cannot run terraform on the same workspace at the same time. Multiple runs at the same time could corrupt the `statefile`
 * You might want to self host because you want control of your own data or you might have security and/or compliance requirements
 
+#### Self-Hosting Pros/Cons TLDR
+* Pros:
+  * You control your statefile
+* Cons:
+  * You are responsible for organizing, securing and locking
+
 ### Terraform Cloud
 
 In 2019, HashiCorp (the company which built Terraform) announced that they were creating a platform called Terraform Cloud to help alleviate some of the difficulty around managing `statefiles`. At the time of this writing, Terraform Cloud is free for up to 5 users. They've also mentioned that their allowed number of hosted `statefiles` is generous, but I haven't seen an exact limit.
 
+#### Terraform Cloud Pros/Cons TDLR
+* Pros
+  * HashiCorp does a lot of the heavy lifting for you
+* Cons
+  * You don't "own" your `statefile`
 
+
+### How to configure `statefile` in Terraform
+
+We're gonna focus on using Terraform Cloud because there's building/maintenance involved. If you're interested in using DigitalOcean's Spaces or S3, check out [this](https://www.terraform.io/docs/language/settings/backends/s3.html) documentation.
+
+
+#### Create a Terraform Cloud account
+
+1. Go to [Terraform Cloud](https://app.terraform.io/signup/account) and create a new account
+2. Once logged in, it will ask you to confirm your email address. Go ahead, I'll wait
+3. When you click the validation link in your Terraform Cloud validation email, it will take you a screen to `Create a new organization`. Give it a name, then press `Create organization`
+4. You'll now see a `Create a new Workspace` page and given three options. It recommends `version control workfolw`, but right now we're just interested in `statefile` hosting. Choose `CLI-driven workflow` 
+5. At the `Create a new Workspace` screen, enter `tf-tutorial`, then press `Create workspace`
+6. Go to the `Settings` menu on the top right corner, select `General`
+7. Change the `Execution Mode` to `local` then press `Save settings`, this means terraform cloud will only be used for `statefile` storage. If you leave it on `Remote`, Terraform Cloud will need credentials for your cloud provider to build/destroy on your behalf.
+8. Go back to the `Runs` tab, here you will find example code to paste into your `provider.tf` file like the text below:
+
+```hcl
+terraform {
+  backend "remote" {
+    organization = "CashiHorp"
+
+    workspaces {
+      name = "tf-tutorial"
+    }
+  }
+}
+```
+_Note: Don't copy the text above, copy the **Example Code** shown in the Terraform Cloud interface._
+
+#### Create an API key to access Terraform Cloud
+
+1. Go to [User Settings/Tokens](https://app.terraform.io/app/settings/tokens)
+2. Press `Create an API Token`
+3. Enter a description like "My Dell Optiplex GX260", then press `Create API token`
+4. Go to your home directory `cd ~/` and create a new file called `.terraformrc`
+5. In that file, you want to add a configuration like the one below: 
+
+```
+credentials "app.terraform.io" {
+  token = "YOURTOKENGOESHERE"
+}
+```
+_Note: Your token will be super long_
+6. Save and exit `.terraformrc`
+
+#### Configuring `provider.tf`
+
+1. Create a new folder on your computer called `tf-tutorial`
+2. Create `provider.tf` file in the `tf-tutorial` folder
+3. Copy the `Example code` provided to you in the Terraform Cloud "Runs" page into your `provider.tf`
+4. Now add your cloud provider to the mix. We'll be using DigitalOcean which will look like this:
+
+```hcl
+terraform {
+  required_providers {
+    digitalocean = {
+      source = "digitalocean/digitalocean"
+      version = "~> 2.0.0"
+    }
+  }
+  required_version = "~> 0.13"
+}
+
+variable "do_token" {
+  description = "Digital Ocean auth token"
+}
+
+provider "digitalocean" {
+  token = var.do_token
+}
+```
 
 ### In Review
 
