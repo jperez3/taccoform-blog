@@ -1,11 +1,11 @@
 +++
 title =  "Taccoform Tutorial Series - Part IV"
 tags = ["terraform", "tutorial", "digitalocean", "terraform13"]
-date = "2020-02-08"
+date = "2020-02-11"
 +++
 
 
-![Photo by T. Kaiser](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![Photo by T. Kaiser](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p4/header.jpg)
 
 
 # Overview
@@ -27,7 +27,7 @@ In Terraform, a statefile is a file which is used to store information about wha
     - Terraform sees a droplet in the `statefile`, but cannot find a resource definition for the droplet in the `.tf` file. Terraform attemps to destroy the droplet
     - Terraform sees a resource definition for a droplet in a `.tf` file and a matching droplet in the `statefile`. Terraform will do nothing
 
-When you start a new terraform workspace and don't specify a `backend` configuration, terraform will create a `statefile` in the working directory. This will help you get up and running, but it is not ideal. Exposed secrets can live in the `statefile`, so you shouldn't check it into git and other people who check out your code won't have the `statefile` to help terraform reconsile the differences.
+When you start a new terraform workspace and don't specify a `backend` configuration, terraform will create a `terraform.statefile` file in the working directory. This will help you get up and running, but it is not ideal. Exposed secrets can live in the `statefile`, so you shouldn't check it into git and other people who check out your code won't have the `statefile` to help terraform reconsile the differences.
 
 ### Where to host your statefile
 
@@ -87,21 +87,20 @@ terraform {
 ```
 _Note: Don't copy the text above, copy the **Example Code** shown in the Terraform Cloud interface._
 
+##### Workspace Naming Conventions
+
+You will more than likely have multiple/many workspaces. Be sure to include environment/stage information by doing things like appending `-prod` to the end of the workspace. Think about what makes sense to you and your team. Try out different naming schemes prior to deciding because it might come back to bite you later.
+
 #### Create an API key to access Terraform Cloud
 
 1. Go to [User Settings/Tokens](https://app.terraform.io/app/settings/tokens)
 2. Press `Create an API Token`
 3. Enter a description like "My Dell Optiplex GX260", then press `Create API token`
-4. Go to your home directory `cd ~/` and create a new file called `.terraformrc`
-5. In that file, you want to add a configuration like the one below: 
+4. Open your terminal and run `terraform login`
+5. Enter `yes` when prompted to proceed
+6. Paste the token you created in steps 1-3, then press enter
+   * You should recieve a confirmation that says your credentails were stored in `/root/.terraform.d/credentials.tfrc.json`
 
-```
-credentials "app.terraform.io" {
-  token = "YOURTOKENGOESHERE"
-}
-```
-_Note: Your token will be super long_
-6. Save and exit `.terraformrc`
 
 #### Configuring `provider.tf`
 
@@ -110,6 +109,7 @@ _Note: Your token will be super long_
 3. Copy the `Example code` provided to you in the Terraform Cloud "Runs" page into your `provider.tf`
 4. Now add your cloud provider to the mix. We'll be using DigitalOcean which will look like this:
 
+`provider.tf`
 ```hcl
 terraform {
   required_providers {
@@ -129,9 +129,65 @@ provider "digitalocean" {
   token = var.do_token
 }
 ```
+_Note: [Taccoform Tutorial Series - Part I](https://www.taccoform.com/posts/tts_p1/) has information on how to set up a DigitalOcean account and API token_
+
+5. Now you should be ready to run Terraform commands, start with `terraform init`
+
+```
+$ terraform init
+
+Initializing the backend...
+
+Successfully configured the backend "remote"! Terraform will automatically
+use this backend unless the backend configuration changes.
+
+Initializing provider plugins...
+- Finding digitalocean/digitalocean versions matching "~> 2.0.0"...
+- Installing digitalocean/digitalocean v2.0.2...
+- Installed digitalocean/digitalocean v2.0.2 (signed by a HashiCorp partner, key ID F82037E524B9C0E8)
+
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://www.terraform.io/docs/plugins/signing.html
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+```
+
+
+#### Testing Your Terraform Cloud Configuration
+
+1. Create a `droplet.tf` file in the `tf-tutorial` folder with the following in it:
+
+`doplet.tf`
+```hcl
+resource "digitalocean_droplet" "web" {
+  image  = "ubuntu-20-04-x64"
+  name   = "web-test"
+  region = "sfo2"
+  size   = "s-1vcpu-1gb"
+}
+```
+
+2. Run `terraform apply`
+3. Enter your DigitalOcean token when prompted
+4. Type `yes` when prompted and press enter
+5. After the apply has completed, go back to the `tf-tutorial` workspace in Terraform Cloud and go to the `States` tab
+6. You will see a new state has been created. Click on the state and you'll be able to see the contents of the `statefile`
+7. Once you're ready, you can run `terraform destroy` to remove the droplet you created.
+8. You can also remove the `tf-tutorial` workspace in Terraform Cloud
+
 
 ### In Review
 
+You now have Terraform Cloud doing the heavy lifting for storing, encrypting, and versioning your Terraform `statefiles`. Even better, you can add more people to your Terraform Cloud organization to collaborate on terraform work. You can also start incorporating CI/CD workflows into your terraform projects.
 
 
 ---
