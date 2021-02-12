@@ -1,6 +1,6 @@
 +++
 title =  "Taccoform Tutorial Series - Part IV"
-tags = ["terraform", "tutorial", "digitalocean"]
+tags = ["terraform", "tutorial", "digitalocean", "terraform13"]
 date = "2021-02-12"
 +++
 
