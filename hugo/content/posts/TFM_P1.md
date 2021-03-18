@@ -5,7 +5,7 @@ date = "2021-03-17"
 +++
 
 
-![Photo by T. Kaiser](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfm_p1/header.jpg)
+![Photo By Lisa W. on Yelp](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfm_p1/header.jpg)
 
 
 # Overview
@@ -28,12 +28,12 @@ Terraform modules are templates composed of resource definitions, variables, and
 
 ### Why should I care about Terraform modules?
 
-At first, it's hard to see the benefit of creating terraform modules because they take more time to create. Iterating in the beginning might be frustrating because you may not understand how everything is connected. Where things get interesting is when you get the hang of building modules and reach that tipping point where the majority of your services has an associated terraform module. You will also see the benefit of standardized naming for resource definitions, variables, and tagging when you're wiring things together and troubleshooting issues.
+At first, it's hard to see the benefit of creating terraform modules because they take more time to create. Iterating in the beginning might be frustrating because you may not understand how everything is connected. Where things get interesting is when you get the hang of building modules and reach that tipping point where the majority of your services have an associated terraform module. You will also see the benefit of standardized naming for resource definitions, variables, and tagging when you're wiring things together and troubleshooting problems.
 
 
 ### When do I start writing Terraform modules?
 
-Start today with something small that you understand, this will help lower the barrier of entry. It will also establishing how you and your team composes modules. Don't choose something related to an existing company project or service. 
+Start today with something small that you understand, this will help lower the barrier of entry. It will also establishing how you and your team creates modules. Don't choose something related to an in-flight company project. The last thing you want to do is slow down the delivery of a product.  
 
 Here are a few Terraform module ideas:
 * a droplet and dns record
@@ -43,7 +43,7 @@ Here are a few Terraform module ideas:
 
 ### Who benefits from Terraform modules?
 
-Your team and customers benefit from terraform modules. Your team will be able to spin up new services more quickly after that initial module creation. They won't need to search for a recipe online, rush to the grocery store to buy ingredients, go back home, and make the tacos. With the proper documentation, they will just point to a menu and say "I want 2 tacos." Your customers will order through you and will be happy their food got to them while it was still hot.
+Your team and customers benefit from terraform modules. Your team will be able to spin up new services more quickly after that initial module creation. They won't need to search for a recipe online, rush to the grocery store to buy ingredients, go back home, and make the tacos. With the proper documentation, they will just point to a menu and say "I want 2 tacos." Your customers will order through you and they will be happy their food got to them while it was still hot.
 
 
 ### Where do I store Terraform modules?
@@ -57,13 +57,14 @@ Terraform modules belong in a git repository. Whether that's github, gitlab or s
 * vendor-specific
 * composed-services
 
-Vendor-specific modules are modules comprised of related resource definitions from the same Terraform provider. This is like going to [Leo's Tacos](https://www.yelp.com/biz/leos-tacos-truck-los-angeles) and ordering an al pastor taco. Leo's would be the provider and the al pastor taco is their (delicious) resource. In terms of a cloud provider, this would be a droplet resource from the DigitalOcean provider.
+Vendor-specific modules are modules comprised of related resource definitions from the same Terraform provider. This is like going to [Leo's Tacos](https://www.leostacostruck.com/) and ordering an al pastor taco. Leo's would be the provider and the al pastor taco is their (delicious) resource. In terms of a cloud provider, this would be a droplet resource from the DigitalOcean provider.
 
-Composed-service modules are modules comprised of multiple vendor-specific modules. Using Leo's Tacos again, this would be ordering 2 al pastor tacos, 1 burrito, and a Mexican coke. As you may have noticed, the Mexican coke isn't something Leo's "made", they just sell it. Composed-services can be made up of vendor specific modules from one or multiple providers. An example of this would be a blog (composed-service) module, which would include a DigitalOcean droplet (vendor-specific) module and Cloudflare [WAF](https://www.cloudflare.com/learning/ddos/glossary/web-application-firewall-waf/) (vendor-specific) module.
+Composed-service modules are modules comprised of multiple vendor-specific modules. Using Leo's Tacos again, this would be ordering 2 al pastor tacos, 1 burrito, and a Mexican Coke. As you may have noticed, the Mexican Coke isn't something Leo's "made", they just sell it. Composed-services can be made up of vendor specific modules from one or multiple providers. An example of this would be a blog (composed-service) module, which would include a DigitalOcean droplet (vendor-specific) module and Cloudflare [WAF](https://www.cloudflare.com/learning/ddos/glossary/web-application-firewall-waf/) (vendor-specific) module.
 
 
 ### In Review
 
+We've talked about the five double-u's of Terraform modules. Look out for the next entry which will dive into how to create your first terraform module.
 
 
 ---
