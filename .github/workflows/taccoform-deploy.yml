@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  TF_VERSION: 0.14.0
+  TF_VERSION: 0.14.10
 
 defaults:
   run:
