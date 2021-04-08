@@ -483,7 +483,11 @@ module.burrito_droplet.digitalocean_droplet.vm[1]: Creation complete after 34s [
 
 ```
 
+<<<<<<< HEAD
+* Check out the DigitalOcean control panel to verify that terraform has created what you expected from the `droplet` module
+=======
     * Check out the DigitalOcean control panel to verify that terraform has created what you expected from the `droplet` module
+>>>>>>> master
 
 11. After you've reviewed the terraform output and digitalocean control panel, run `terraform destroy` then enter _yes_ when prompted:
 
