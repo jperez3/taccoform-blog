@@ -1,17 +1,16 @@
 +++
-title =  "Creating a Terraform Module"
+title =  "Fisher-Price: My First Terraform Module"
 tags = ["terraform", "tutorial", "digitalocean", "terraform14", "module", "modules"]
-date = "2021-11-07"
-draft = true
+date = "2021-04-08"
 +++
 
 
-![Photo by T. Kaiser](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![cartoon taco](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfm_p2/header.png)
 
 
 # Overview
 
-
+You've written some Terraform and realize that you've been copying the same resource definitions from workspace to workspace. Maybe you're establishing multiple enviroments and find that it's hard to remember everything that goes into the configuration, causing inconsistencies or worse... a production outage. In this article we'll go over writing your first terraform module to help establish patterns to provision resources in a consistent and predictable manner.
 
 
 ## Lesson
@@ -27,19 +26,27 @@ draft = true
 
 A terraform module is a templated verison of Terraform resource definitions, variables, and data source lookups. Terraform modules are great to build because they make your work easily reproducible, enforces naming consistency, and makes it easy for others to build off of your work. For more information on modules, check out [The Who, What, Where, When, and Why of Terraform Modules](https://www.taccoform.com/posts/tfm_p1/)
 
+### Pre-Flight
+
+#### Create a DigitalOcean Account
+
+1. Create a DigitalOcean account [DigitalOcean Free Credit Referral Link](https://m.do.co/c/d26a4fc22a12)
+2. Create a _Personal Access Token_ (DigitalOcean Control Panel: Left pane>Account>API>Personal access tokens>Generate New Token)
+3. Give the _Personal Access Token_ **Read** and **Write** access
+4. Add this token to your password manager.
 
 ### Organizating Terraform Modules
 
-Terraform modules can be hosted in several ways, I prefer to host them via git and in their own repository. 
+Terraform modules can be hosted in several ways, I prefer to host them via git and in their own module repository. 
 
 1. Start by creating a new private repo named `taccoform-modules`. Since this is a private repository, any person (or machine) that wants to use your terraform modules will need read access to the repo.
-2. Create a new branch in that repo, eg `new-droplet-module`
+2. Create a new branch in that repo called `new-droplet-module`
 3. Create a two folders in the root of your new repository `vendors` and `tacco-corp` 
    1. `vendors` is where you'll put terraform modules from cloud providers with terraform providers
-   2. `tacco-corp` is where you'll put terraform modules that are comprised of one or more vendor modules to create a composed service for our Tacco-Corp company. Think of composed services as a meal coming together like a plate of fajitas, rice, beans, and a salt-rimmed margarita. In cloud provider terms this could be a composed service with a load-balancer, virtual machine, and database.
+   2. `tacco-corp` is where you'll put terraform modules that are comprised of one or more vendor modules to create a composed service for our Tacco-Corp company. Think of composed services as a meal coming together like a plate of fajitas, rice, beans, and a salt-rimmed margarita. In cloud provider terms this could be a terraform module with a load-balancer, virtual machine, and database.
 4. In the vendors folder, create `digitalocean` and in that folder create a `droplet` folder.
 
-_Your folder structure should look something like this_
+_Your folder structure should look something like this:_
 
 ```
 taccoform-modules
@@ -103,7 +110,7 @@ resource "digitalocean_droplet" "web" {
 ```
 _Note: It's a common practice to define `count` at the top and separated from the other parameters because `count` is not a parameter of the resource you are defining, but more of a built-in function of terraform. Count can be used to create multiple instances of a resource, conditionally create a resource, or disable it all together by setting it to zero_
 
-6. Create variables in `droplet_variables.tf` for `droplet_count`, `droplet_image`, `droplet_monitoring`, `droplet_node_type` and `droplet_size`. Creating variables for these parameters gives us flexibility later when we want to customize the droplet(s) we're provisioning with the droplet module
+6. Create variables in `droplet_variables.tf` for `droplet_count`, `droplet_image`, `droplet_monitoring`, `droplet_node_type` and `droplet_size`. Creating variables for these parameters gives us flexibility later when we want to customize the droplet(s) we're provisioning with the `droplet` module
 
 
 `droplet_variables.tf`
@@ -254,11 +261,22 @@ module "burrito_droplet" {
   service = "burrito"
 }
 ```
-    1. Line 1 tells terraform that you want to call a module and give it any name that you want for this specific deployment of the module
-    2. Line 2 tells terraform where to get the module from. In this case, up a couple directories in this repo and then going down into the droplet module folder. You can also use a github repo as a source and we'll go over that in a little bit.
+    1. Line 1 tells terraform that you want to call a module and give it a name that is related to this specific deployment of the `droplet` module
+    2. Line 2 tells terraform the location of the module files you want to use. In this case, up a couple directories in this repo and then going down into the droplet module folder. You can also use a github repo as a source and we'll go over that in a little bit.
     3. Line 3 is empty (duh)
     4. Line 4 is telling the module to override the default value for the variable `env`
-    5. Line 5 is telling the module to set the value for the `service` variable to `burrito`. If we did not set a value for `service`, terraform would prompt you for a value when you ran a `terraform` cli command. This isn't ideal because you will probably get tired of entering that variable for every `terraform` command
+    5. Line 5 is telling the module to set the value for the `service` variable to `burrito`. If we did not set a value for `service`, terraform would complain that a required variable isn't defined:
+
+```
+❯ terraform plan
+
+Error: Missing required argument
+
+  on droplet.tf line 1, in module "burrito_droplet":
+   1: module "burrito_droplet" {
+
+The argument "service" is required, but no definition was found.
+```
 
 6. If you haven't already, set the `TF_VAR_do_token` environment variable with your DigitalOcean token:
 
@@ -270,7 +288,7 @@ export TF_VAR_do_token=YOURDIGITALOCEANTOKENGOESHERE
 8. Run `terraform init` to initialize the workspace and pull the terraform module. Your output should look something like this:
 
 ```
-terraform init
+❯ terraform init
 Initializing modules...
 - burrito_droplet in ../../vendors/digitalocean/droplet
 
@@ -304,7 +322,7 @@ commands will detect it and remind you to do so if necessary.
 9. Now run `terraform plan` to see what the module wants to create:
 
 ```
-terraform plan
+❯ terraform plan
 
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
@@ -380,7 +398,7 @@ can't guarantee that exactly these actions will be performed if
 10. If the plan looks good to you, go ahead and run `terraform apply`, then enter _yes_ when prompted:
 
 ```
-terraform apply
+❯ terraform apply
 
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
@@ -470,7 +488,7 @@ module.burrito_droplet.digitalocean_droplet.vm[1]: Creation complete after 34s [
 11. After you've reviewed the terraform output and digitalocean control panel, run `terraform destroy` then enter _yes_ when prompted:
 
 ```
-terraform destroy
+❯ terraform destroy
 
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
@@ -486,7 +504,7 @@ Terraform will perform the following actions:
       - id                   = "240470473" -> null
       - image                = "ubuntu-18-04-x64" -> null
       - ipv4_address         = "159.65.106.42" -> null
-      - ipv4_address_private = "10.120.0.4" -> null
+      - ipv4_address_private = "10.177.0.4" -> null
       - ipv6                 = false -> null
       - locked               = false -> null
       - memory               = 1024 -> null
@@ -502,7 +520,7 @@ Terraform will perform the following actions:
       - urn                  = "do:droplet:240470473" -> null
       - vcpus                = 1 -> null
       - volume_ids           = [] -> null
-      - vpc_uuid             = "f7eaa987-e987-4f65-ab27-a7cf99e08ee8" -> null
+      - vpc_uuid             = "1234987-1234-4f65-1234-a71234566789" -> null
     }
 
   # module.burrito_droplet.digitalocean_droplet.vm[1] will be destroyed
@@ -513,7 +531,7 @@ Terraform will perform the following actions:
       - id                   = "240470472" -> null
       - image                = "ubuntu-18-04-x64" -> null
       - ipv4_address         = "159.65.106.99" -> null
-      - ipv4_address_private = "10.120.0.5" -> null
+      - ipv4_address_private = "10.177.0.5" -> null
       - ipv6                 = false -> null
       - locked               = false -> null
       - memory               = 1024 -> null
@@ -529,7 +547,7 @@ Terraform will perform the following actions:
       - urn                  = "do:droplet:240470472" -> null
       - vcpus                = 1 -> null
       - volume_ids           = [] -> null
-      - vpc_uuid             = "f7eaa987-e987-4f65-ab27-a7cf99e08ee8" -> null
+      - vpc_uuid             = "1234987-1234-4f65-1234-a71234566789" -> null
     }
 
 Plan: 0 to add, 0 to change, 2 to destroy.
@@ -575,7 +593,7 @@ module "burrito_droplet" {
 2. Save the `droplet.tf` file and run `terraform init` to pull the module from git:
 
 ```
-terraform init
+❯ terraform init
 Initializing modules...
 Downloading git::git@github.com:jperez3/taccoform-modules.git?ref=new-droplet-module for burrito_droplet...
 - burrito_droplet in .terraform/modules/burrito_droplet/vendors/digitalocean/droplet
@@ -655,6 +673,9 @@ commands will detect it and remind you to do so if necessary.
 ```
 
 * SUCCESS!!! Run a `terraform plan` to verify once more that it's still created the resources that you expected
+
+
+9. As long as you didnt reprovision the droplets, you can safely delete the `module-testing` folder and/or the `new-droplet-module` branch.
 ### In Review
 
 You've created a versioned DigitalOcean droplet module that you re-use anywhere. This is a simple module example, other modules can create many resources to interact with eachother. As a stretch goal, try to add another DigitalOcean resource to the `droplet` module and "bump" the version to `do-droplet-v1.1.0`. 
