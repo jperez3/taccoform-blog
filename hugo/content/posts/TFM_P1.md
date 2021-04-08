@@ -64,7 +64,7 @@ Composed-service modules are modules comprised of multiple vendor-specific modul
 
 ### In Review
 
-We've talked about the five double-u's of Terraform modules. Look out for the next entry which will dive into how to create your first terraform module.
+We've talked about the five double-u's of Terraform modules. Check out the next [post](https://www.taccoform.com/posts/tfm_p2) which will dive into creating your first terraform module.
 
 
 ---
