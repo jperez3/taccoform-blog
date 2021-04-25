@@ -56,6 +56,11 @@ resource "digitalocean_loadbalancer" "web" {
   }
 
   droplet_ids = digitalocean_droplet.web.*.id
+
+  lifecycle {
+    ignore_changes = [forwarding_rule]
+  }
+
 }
 
 

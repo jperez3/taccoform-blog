@@ -696,7 +696,7 @@ _Now run `terraform plan -var-file="custom.tfvars"` and review how it changes th
 
 * Variables can be difficult to name and they eat up a bunch of your time, but it's a worthy investment in the long run. What you have now is reuseable code which can be copied to other terraform workspaces. You are also a few short steps away from creating a terraform module.
 
-
+Check out the next entry in the [Taccoform Tutorial Series](https://www.taccoform.com/posts/tts_p4/) which will go over Terraform `statefiles` and how to use them.
 
 
 ---

@@ -81,6 +81,30 @@ The instructions in the `provider.tf` file is a heads up of sorts which tells Te
 
 In the templates folder you will find a user data file. This file is passed to the droplet (or virtual machine) as instructions on how to configure the operating system after it boots up. This might be the easiest way to automatically configure a droplet, but there are other methods which have their own sets of pros and cons. 
 
+`user_data_nginx.yaml`
+```
+#cloud-config
+
+packages:
+    - nginx
+
+runcmd:
+    - [hostname, ${hostname}]
+    - echo "<html><body><h1>${hostname} IS ALIVE!!!</h1></body></html>" | tee /var/www/html/index.nginx-debian.html
+    - [systemctl, reload, nginx]
+```
+
+| Component              | Description                                                                    |
+| :--------------------- | :----------------------------------------------------------------------------- |
+| `#cloud-config`        | Tells DigitalOcean that configuration instructions are incoming                |
+| `packages`             | A heading to install linux applications on the droplet                         |
+| `runcmd`               | Allows you to run arbitrary bash commands during the first boot of the droplet |
+
+Here are a few resources that dig deeper into `cloud-config`/`cloud-init`/`user-data`: 
+
+* [An Introduction to Cloud-Config Scripting](https://www.digitalocean.com/community/tutorials/an-introduction-to-cloud-config-scripting)
+* [cloud-init documentation](https://cloudinit.readthedocs.io/en/latest/)
+
 
 #### Droplet file 
 
@@ -417,6 +441,7 @@ After the `terraform destroy` has finished, don't forget to commit your changes 
 * Destroyed the droplet
   
 
+Check out the next entry in the [Taccoform Tutorial Series](https://www.taccoform.com/posts/tts_p2/), which will cover `count`, `for_each`, and how to keep your code "DRY"
 
 ---
 _Feel free to reach out on twitter via [@taccoform](https://twitter.com/taccoform) for questions and/or feedback on this post_  

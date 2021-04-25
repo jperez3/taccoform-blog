@@ -5,7 +5,7 @@ date = "2021-02-12"
 +++
 
 
-![Photo by T. Kaiser](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p4/header.jpg)
+![tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p4/header.jpg)
 
 
 # Overview
@@ -189,6 +189,7 @@ resource "digitalocean_droplet" "web" {
 
 You now have Terraform Cloud doing the heavy lifting for storing, encrypting, and versioning your Terraform `statefiles`. Even better, you can add more people to your Terraform Cloud organization to collaborate on terraform work. You can also start incorporating CI/CD workflows into your terraform projects.
 
+Check out the next [post](https://www.taccoform.com/posts/tts_p3/) which will cover defining, using, and organizing variables.
 
 ---
 _As always, feel free to reach out on twitter via [@taccoform](https://twitter.com/taccoform) for questions and/or feedback on this post_
