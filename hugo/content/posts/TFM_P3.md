@@ -44,7 +44,7 @@ In the previous post, we created a droplet terraform module (vendor specific mod
 
 
 1. Create a new github repository called `taccoform-modules` (if you haven't already) and create a new branch called `nachos-module`
-2. Create new `tacco-corp>services>nachos` folders in a git repo of your choice
+2. Create new `tacco-corp>services>nachos` folders in your ` taccoform-modules` repo:
 ```
 tacco-corp
 └── services
