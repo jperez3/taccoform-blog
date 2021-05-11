@@ -10,7 +10,7 @@ date = "2021-05-05"
 
 # Overview
 
-You've started building out terraform modules to help keep your Terraform workspaces DRY, but you've noticed that your terraform workspaces are filled with modules and you still have to remember how they all wire up together. In this post we'll go over how to create easy to deploy composed services so that anyone on your team can deploy services without needing to know how the individual resources interact with eachother.  
+You've started building out terraform modules to help keep your Terraform workspaces DRY, but you've noticed that your terraform workspaces are filled with modules and you still have to remember how they all wire up together. In this post we'll go over how to create easy to deploy composed services so that anyone on your team can deploy services without needing to know how the individual resources interact with each other.  
 
 ## Lesson
 
@@ -21,7 +21,7 @@ You've started building out terraform modules to help keep your Terraform worksp
 
 ### Terraform Module Review
 
-In the previous [post](https://www.taccoform.com/posts/tfm_p2/), I brought up two types of modules, vendor specific and composed services. Vendor specific modules are smaller modules which are focused on creating resources from a single provider. Think of vendor specific modules as consistent/repeatable instructions to perform a specific task like grilling chicken. Composed services are the combining smaller vendor specific modules into one functional service. Think of composed services as an order of nachos. Nachos are the combination of multiple layers and/or ingredients. But be careful with how many layers and ingredients you add, your chicken nachos (and terraform modules) can become a soggy mess. 
+In the previous [post](https://www.taccoform.com/posts/tfm_p2/), I brought up two types of modules: vendor specific and composed services. Vendor specific modules are smaller modules which are focused on creating resources from a single provider. Think of vendor specific modules as consistent/repeatable instructions to perform a specific task like grilling chicken. Composed services are the combining smaller vendor specific modules into one functional service. Think of composed services as an order of nachos. Nachos are the combination of multiple layers and/or ingredients. But be careful with how many layers and ingredients you add, your chicken nachos (and terraform modules) can become a soggy mess. 
 
 #### Vendor Specific Modules
 
@@ -40,11 +40,11 @@ In the previous [post](https://www.taccoform.com/posts/tfm_p2/), I brought up tw
 ### Using Vendor Modules to create Composed Services
 
 
-In the previous post, we created a droplet terraform module (vendor specific module) and I've created a load balancer terraform module to show you how we can have those two modules come together as a compose service. We'll call this composed service "nachos." 
+In the previous post, we created a droplet terraform module (vendor specific module) and I've created a load balancer terraform module to show you how we can have those two modules come together as a composed service. We'll call this composed service "nachos." 
 
 
 1. Create a new github repository called `taccoform-modules` (if you haven't already) and create a new branch called `nachos-module`
-2. Create new `tacco-corp>services>nachos` folders in your ` taccoform-modules` repo:
+2. Create new `tacco-corp>services>nachos` folders in your `taccoform-modules` repo:
 ```
 tacco-corp
 └── services
