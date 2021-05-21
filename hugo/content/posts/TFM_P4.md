@@ -10,7 +10,7 @@ date = "2021-05-19"
 
 # Overview
 
-Now on to everyone's favorite topic... Documentation. Some people think documenation is a waste of time and that it's going to be out of date as soon as the ink dries. I understand that frustration, documentation is **not** easy. It takes a lot of effort to create the initial documentation, gather feedback, and update the documentation when changes happen. It can feel like an uphill battle. The alternative is no documenation and everyone steps on the same rake. Today we'll go over why it's important to document your Terraform modules and how to do it. 
+Now on to everyone's favorite topic... Documentation. Some people think documentation is a waste of time and that it's going to be out of date as soon as the ink dries. I understand that frustration, documentation is **not** easy. It takes a lot of effort to create the initial documentation, gather feedback, and update the documentation when changes happen. It can feel like an uphill battle. The alternative is no documentation and everyone steps on the same rake. Today we'll go over why it's important to document your Terraform modules and how to do it. 
 
 ## Lesson
 
