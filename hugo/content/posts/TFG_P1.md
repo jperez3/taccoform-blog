@@ -6,18 +6,21 @@ draft = true
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p1/header.jpg)
 
 
 # Overview
 
-* What's a Terraform import?
-* When should I use terraform import?
-* How do I use a terraform import?
+Terraform is a great tool for managing infrastructure, but let's be honest, sometimes it can put you into precarious situations. After working with Terraform for a while, you will start to develop some kind of muscle memory for what works and what doesn't. One thing you'll start to notice is that your Terraform workspace is taking longer and longer to run. You need to address this problem, but you also can't delete production resources and recreate them in a different terraform workspace. Today we'll go over Terraform Import and when to use it.
+
 
 ## Lesson
 
-### What's a Terraform import?
+* What's a Terraform Import?
+* When Should I Use Terraform Import?
+* How do I use a terraform import?
+ 
+### What's a Terraform Import?
 
 Terraform import is a subcommand that allows you to bring existing resources into your current terraform workspace's statefile. These resources could have been created by clicking through a GUI or via Terraform in another workspace. By defining a resource definition and importing the cloud resource (eg droplet), you will be able to manage/track that resource in the future via terraform. 
 
