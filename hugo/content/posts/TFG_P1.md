@@ -1,8 +1,7 @@
 +++
 title =  "Terraform Import"
 tags = ["terraform", "tutorial", "digitalocean", "import"]
-date = "2021-11-07"
-draft = true
+date = "2021-06-17"
 +++
 
 
