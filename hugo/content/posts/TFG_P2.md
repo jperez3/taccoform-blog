@@ -84,7 +84,7 @@ When you want to apply those `common_tags` to a resource, you will need to merge
 
 
 `ec2.tf`
-```
+```hcl
 resource "aws_instance" "web" {
   count = var.instance_count
 
@@ -133,7 +133,7 @@ The values have been hard-coded here for visibility, but these are generally fed
 Now that we've looked up that information, we can apply it to the ec2 instance:
 
 `ec2.tf`
-```
+```hcl
 resource "aws_instance" "web" {
   count = var.instance_count
 
