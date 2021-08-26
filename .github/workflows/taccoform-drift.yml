@@ -2,7 +2,7 @@ name: "taccoform-drift"
 
 on:
   schedule:
-    - cron: '15,20,25,30 * * * *'
+    - cron: '*/5 * * * *'
 
 # on:
 #   workflow_dispatch:
