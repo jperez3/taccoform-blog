@@ -5,7 +5,7 @@ date = "2021-08-30"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![Photo by Diego Lozano](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p3/header.jpg)
 
 
 # Overview
