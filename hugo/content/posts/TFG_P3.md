@@ -1,7 +1,7 @@
 +++
 title =  "Drift Detection with Github Actions"
 tags = ["terraform", "tutorial", "digitalocean", "github-actions", "github", "drift"]
-date = "2021-08-30"
+date = "2021-08-31"
 +++
 
 
@@ -10,7 +10,7 @@ date = "2021-08-30"
 
 # Overview
 
-It's Friday at 5PM and an urgent requests comes in from the Chief Infotainment Officer. You know exactly what you have to update in terraform and create a new feature branch to make the changes. You're rolling through the lower environments and finally get to production. You run a `terraform plan` and unexpected resource deletions show up in the output. You panic a little, then realize that your work didn't trigger the deletion. Terraform "drift" is getting between you and the weekend. Today we're going to talk about a strategy to help identify drift before it becomes a problem.  
+It's Friday at 5PM and an urgent request comes in from the Chief Infotainment Officer. You know exactly what you have to update in terraform and create a new feature branch to make the changes. You're rolling through the lower environments and finally get to production. You run a `terraform plan` and unexpected resource deletions show up in the output. You panic a little, then realize that your work didn't trigger the deletion. Terraform "drift" is getting between you and the weekend. Today we're going to talk about a strategy to help identify drift before it becomes a problem.  
 
 
 ## Lesson
