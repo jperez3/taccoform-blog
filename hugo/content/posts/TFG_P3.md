@@ -1,11 +1,11 @@
 +++
 title =  "Drift Detection with Github Actions"
-tags = ["terraform", "tutorial", "digitalocean", "github-actions", "github"]
+tags = ["terraform", "tutorial", "digitalocean", "github-actions", "github", "drift"]
 date = "2021-08-30"
 +++
 
 
-![Photo by Diego Lozano](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p3/header.jpg)
+![](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p3/header.jpg)
 
 
 # Overview
@@ -46,6 +46,7 @@ I recently discovered that terraform has a built-in flag called `-detailed-exitc
 * 0 - We're good, no changes were detected
 * 1 - damn, something bad happened
 * 2 - Oh no! Drift detected! 
+_Note: After running `terraform plan -detailed-exitcode`, you can run `echo $?` to output the exit code of the previous command_
 
 You can use these exit codes in automation to alert you when changes and/or problems occur. One way you can automate this process is through github actions. You can create a github actions workflow (which is just a yaml file) to run on a schedule. Github action workflows live in your repo's `.github/workflows` folder.
 
@@ -185,7 +186,7 @@ jobs:
           echo "Drift detected on this terraform workspace"
           exit 1
 ```          
-This is a simple example, but you can also configure github actions to send you a slack alert or email when a problem occurs. 
+This is a simple example, but you can also configure github actions to send you a slack alert or email when a problem occurs. After you add this workflow to your `main` branch, the workflow will be activated. You can then go to your repo's `Actions` tab and choose the `taccoform-drift` workflow. The workflow will run at the interval you specified in the cron field. It seems like the lowest interval you can set on a schedule right now is ~7 minutes. You can see an example of the jobs running on a schedule [here](https://github.com/jperez3/taccoform-blog/actions/workflows/taccoform-drift.yml)
 
 
 
@@ -194,6 +195,9 @@ It is worth calling out that tools like [atlantis](https://www.runatlantis.io/) 
 ### In Review
 
 We've talked about drift, how to remediate it, and how to get ahead of it. By building in drift detection, you and your team will move faster because less time will be spent on fixing things unrelated to your task at hand. 
+
+This post was inspired by [Julie Ng's](https://twitter.com/jng5) work on [Azure DevOps Governance](https://github.com/azure/devops-governance)
+
 
 
 ---
