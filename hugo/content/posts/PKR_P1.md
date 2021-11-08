@@ -45,11 +45,74 @@ Packer uses HCL2 just like terraform and if you've written Terraform code, you k
 
 * Build: a code block which tells packer to invoke a defined source block and run additional configuration on that intance/droplet/vm
 
+
+
+#### Source Example
+
 `source.pkr.hcl`
+
 ```hcl
+source "amazon-ebs" "linux" {
 
+  # AWS AMI data source lookup 
+  source_ami_filter {
+    filters = {
+      name                = "amzn2-ami-hvm-*-x86_64-ebs"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["amazon"]
+
+  }
+
+  # AWS EC2 parameters
+  ami_name      = "taccoform-burrito-${regex_replace(timestamp(), "[- TZ:]", "")}"
+  instance_type = "t3.micro"
+  region        = "us-east-1"
+  subnet_id     = var.subnet_id
+  vpc_id        = var.vpc_id
+
+
+
+  # provisioning connection parameters
+  communicator                 = "ssh"
+  ssh_username                 = "ec2-user"
+  ssh_interface                = "session_manager"
+  iam_instance_profile         = "taccoform-packer"
+
+  tags = {
+    Environment     = "prod"
+    Name            = "taccoform-burrito-${regex_replace(timestamp(), "[- TZ:]", "")}"
+    PackerBuilt     = "true"
+    PackerTimestamp = regex_replace(timestamp(), "[- TZ:]", "")
+    Service         = "burrito"
+  }
+} 
 ```
+_Note: It's a good practice to included the `timestamp` in the Packer AMI name to establish a unique naming convention. This will prevent any naming collision between builds and help you diagnose issues when things go wrong._
 
+#### Build Example
+
+
+`build.pkr.hcl`
+
+```hcl
+build {
+  sources = ["source.amazon-ebs.linux"]
+
+  provisioner "shell" {
+    scripts = [
+      "files/init.sh",
+    ]
+  }
+
+}
+```
+_The `build` block invokes a `source` or multiple `source` blocks and then runs additional configuration based on the defined `provisioner` sub-blocks_ 
+
+
+### Packer Commands 
 
 
 ### In Review
