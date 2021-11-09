@@ -1,16 +1,16 @@
 +++
 title =  "Packer Detour #1: Packer+Amazon Linux 2+AWS Session Manager "
-tags = ["packer", "tutorial", "aws", "session-mana"]
+tags = ["packer", "tutorial", "aws", "session-manager"]
 date = "2021-11-09"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/pkr_p1/header.jpg)
 
 
 # Overview
 
-The year is 2021 and you're still building servers, you read that right. It's not always a bad thing though. There are certain scenarios you might consider using an instance over a container or function. Maybe AWS doesn't provide a hosted solution for the technology you want to use, maybe you want to do multi-cloud and the cloud provider's offerings are too different to manage. No matter the reason, you should familiarize yourself with Hashicorp Packer. 
+The year is 2021 and you're still building virtual machines. Yes, you read that right, but it's not always a bad thing. There are few scenarios where you might consider using a virtual machine over a container (or function.) Maybe AWS doesn't provide a hosted solution for the technology you want to use, maybe you want to do multi-cloud and the cloud provider's offerings are too different to manage. Packer can help you build and maintain custom virtual machine images. 
 
 ## Lesson
 
@@ -24,26 +24,26 @@ The year is 2021 and you're still building servers, you read that right. It's no
 
 ### What is Packer? 
 
-Packer is brought to you by Hashicorp, the very same people who brought you Terraform. The link between these two products might be a little loose, but can become a superpower when combined. Packer also uses Hashicorp's HCL2 (Hashicorp Configuration Language V2) which should feel similar to writing Terraform code. Packer allows you to build configurations on top of existing images. In our case, we're talking about adding additional configuration to Amazon Linux 2 AMIs. Packer builds AMIs by provisioning an instance on your behalf, uses ssh to log into the instance and configure it based on your specifications. When the configuration completes, packer shuts down the instance and turns it into an AMI and then does a bit of clean up. 
+[Packer](https://www.packer.io/) is brought to you by Hashicorp, the same people who brought you Terraform. The link between these two products might be a little loose, but can become a superpower when combined. Packer also uses Hashicorp's [HCL2](https://www.terraform.io/docs/language/index.html) (Hashicorp Configuration Language V2) which should feel similar to writing Terraform code. Packer allows you to build configurations on top of existing virtual machine images. In our case, we're talking about adding additional configuration to Amazon Linux 2 [AMIs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html). Packer builds AMIs by provisioning an instance on your behalf, uses ssh to remote into the instance and configure it based on your specifications. When the configuration completes, packer shuts down the instance, turns it into an AMI and then does a bit of clean up. 
 
 ### Why Should I Care About Packer? 
 
-Investing in Packer will bring you closer to immutable infrastructure which is a fancy way of saying you'll have the ability to trash an instance and not freak out about it. Rebuilding a broken/missing/deleted instance is fast and easy because you baked most of your configuration into a custom AMI. I say most of your configuration because you should not store sensitive information like secrets in your custom AMI. 
+Investing in Packer will bring you closer to immutable infrastructure which is a fancy way of saying you'll have the ability to destroy an instance and not freak out about it. Rebuilding a broken/missing/deleted instance is fast and easy because you baked most of your configuration into a custom AMI. I say most of your configuration because you should not store sensitive information like secrets in your custom AMI. 
 
 
 ### Security Hurdles
 
-The default behavior for Packer is to provision a keypair (for ssh access), instance, and security group on your behalf during the Packer build process. This all looks great on the surface, but take a closer look at the security group and you'll notice that it opens up the instance to the public Internet which doesn't feel very secure. The Packer build process can take anywhere from 5-30 minutes depending on the amount of custom configuration you put into your build. A more secure way to do this is by using a [bastion](https://www.learningjournal.guru/article/public-cloud-infrastructure/what-is-bastion-host-server/) instance to tunnel through to get to the private instance for configuration. The cost of using this method is additional configuration and a bastion instance to maintain. An even more secure way to accomplish this is by leveraging AWS's Session Manager to connect into the instance for configuration. Session Manager is its own glorious thing and deserves more praise for all that it gives you. People with other cloud provider experience might shrug it off, but you should definitely check it out if you're working in AWS. 
+The default behavior for Packer is to provision a keypair (for ssh access), instance, and security group on your behalf during the Packer build process. This all looks great on the surface, but take a closer look at the security group and you'll notice that it opens up the instance to the public Internet which doesn't feel very secure. The Packer build process can take anywhere from 5-30 minutes depending on the amount of custom configuration you put into your build. A more secure way to do this is by using a [bastion](https://www.learningjournal.guru/article/public-cloud-infrastructure/what-is-bastion-host-server/) instance to tunnel through to get to the private instance for configuration. The cost of using this method is additional configuration and a bastion instance to maintain. An even more secure way to accomplish this is by leveraging AWS's Systems Manager Session Manager to connect into the instance for configuration. Session Manager is an amazing and underutilized tool for managing EC2 instances in multiple ways.
 
 
 
 ### Packer Files And Components
 
-Packer uses HCL2 just like terraform and if you've written Terraform code, you know the files end in `.tf`, so naturally packer files end in `.pkr`. LOL not the case, but somewhat close... Packer files end with `.pkr.hcl`. I recommend taking some time to think about how you want to organize your Packer files, rather than throwing everything into something like `main.pkr.hcl`. The two major components of Packer are `builds` and `sources`, so that might be a good line in the sand for file organization.
+Packer uses HCL2 just like Terraform. If you've written Terraform code, you know the files end in `.tf`, so Packer files end in `.pkr`. **LOL** that's not the case. Packer files end with `.pkr.hcl`. I recommend taking some time to think about how you want to organize your Packer files, rather than throwing everything into something like `main.pkr.hcl`. The two major components of Packer are `builds` and `sources`, so that might be a good line in the sand for file organization.
 
 * Source: a code block which tells Packer where to start which is most likely a cloud provider and how to connect to the instance/droplet/vm for additional configuration 
 
-* Build: a code block which tells packer to invoke a defined source block and run additional configuration on that intance/droplet/vm
+* Build: a code block which tells packer to invoke a defined source block and run additional configuration on that intance/droplet/vm via provisioners. You can use bash as a provisioner, but Packer also supports configuration management tools like `ansible` 
 
 
 
@@ -115,7 +115,7 @@ _The `build` block invokes a `source` or multiple `source` blocks and then runs 
 ### Packer Commands 
 
 
-Packer is similar to Terraform in that the commands are searching the current working directory for configuration files and it uses the command plus subcommand format to run. Here are some of the basic commands to get going:
+Packer is similar to Terraform in that executed commands search the current working directory for configuration files and it uses the command plus subcommand format to run. Here are some of the basic commands to get going:
 
 * `packer init` - intitializes packer plugins. This is similar to how Terraform intializes the configured providers 
 * `packer validate` - validates packer configuration files. This is similar to Terraform's validate subcommand and checks for syntax/configuration issues.
@@ -124,7 +124,7 @@ Packer is similar to Terraform in that the commands are searching the current wo
 ### Packer Builds
 
 
-Now that we've gone over the basis, it's time to get our hands dirty and start building some AMIs. We'll be using the same configuration used for `awscli` to provision a packer image with [AWS System Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) (yes it's a long and ridiculous name for an otherwise cool tool.) 
+Now that we've gone over the basics, it's time to get our hands dirty and start building some AMIs. We'll be using the same configuration used for `awscli` to provision a packer image with [AWS System Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) (yes it's a long and ridiculous name for an otherwise cool tool.) 
 
 #### Pre-Flight
 
@@ -144,19 +144,23 @@ Now that we've gone over the basis, it's time to get our hands dirty and start b
 
 #### Terraform
 
-You thought there would be no terraform in this post, I did too. It turns out that you need a few things for this to work. You need a VPC, an IAM policy to allow access to session manager on an instance and a role/profile to attach it to said instance. For a closer look at what is being provisioned, check out [packer.tf](https://github.com/jperez3/taccoform-packer/blob/main/basic/packer.tf)
+You thought there would be no terraform in this post, I did too. It turns out that you need a few things for this to work. You need a VPC, an IAM policy to allow access to session manager on an instance and a role/profile to attach it to said instance. For a closer look at what is being provisioned, check out [packer.tf](https://github.com/jperez3/taccoform-packer/blob/main/basic/packer.tf).
 
 1. Run `terraform init`
 2. Run `terraform apply -auto-approve`
 3. Set the VPC ID from the terraform output as an environment variable that packer can read: `export PKR_VAR_vpc_id=$(terraform output -raw vpc_id)`
 4. Set the Subnet ID from the terraform output as an environment variable that packer can read: `export PKR_VAR_subnet_id=$(terraform output -raw private_subnet_id)`
-5. Verify that both variables were set, eg `echo $PKR_VAR_vpc_id`
+5. Verify that both variables were set:
+  - `echo $PKR_VAR_vpc_id`
+  - `echo $PKR_VAR_subnet_id`
+  
+**This Terraform will create a small increase on your AWS bill, be sure to remove these resources after you're done testing.**  
 
 
 #### Packer
 
 
-Now on to the main attraction, you are now read to build your first Amazon AMI with Packer. From the `basic` directory, run the following:
+Now on to the main course, you are now ready to build your first Amazon AMI with Packer. From the `basic` directory, run the following:
 
 1. Intialize the AWS Packer plugin: `packer init plugins.pkr.hcl`
 2. Kick of image creation: `packer build .`
@@ -217,11 +221,11 @@ resource "aws_instance" "burrito" {
 ```
 
 
-4. After you're done testing/building, dont forget to run `terraform destroy` in the workspace
+4. After you're done testing/building, dont forget to run `terraform destroy` in the workspace to remove the VPC and IAM resources
 
 ### In Review
 
-Packer is a great tool for pre-baking images so they be provisioned more quickly and easily replaced. Using Packer with AWS Session Manager feels like a welcome cheat code and I hope this tutorial helps you on your cloud journey. 
+Packer is a great tool for pre-baking images so they can be provisioned more quickly and easily replaced. Using Packer with AWS Session Manager feels like a welcome cheat code and I hope this tutorial helps you on your cloud journey. 
 
 
 ---
