@@ -1,7 +1,7 @@
 +++
 title =  "Packer Detour #1: Packer+Amazon Linux 2+AWS Session Manager "
 tags = ["packer", "tutorial", "aws", "session-mana"]
-date = "2021-11-07"
+date = "2021-11-09"
 +++
 
 
@@ -115,8 +115,113 @@ _The `build` block invokes a `source` or multiple `source` blocks and then runs 
 ### Packer Commands 
 
 
+Packer is similar to Terraform in that the commands are searching the current working directory for configuration files and it uses the command plus subcommand format to run. Here are some of the basic commands to get going:
+
+* `packer init` - intitializes packer plugins. This is similar to how Terraform intializes the configured providers 
+* `packer validate` - validates packer configuration files. This is similar to Terraform's validate subcommand and checks for syntax/configuration issues.
+* `packer build` - kicks off the packer build process. The build command is like running Terraform apply with the `-auto-approve` flag to bypass the user provided input. 
+
+### Packer Builds
+
+
+Now that we've gone over the basis, it's time to get our hands dirty and start building some AMIs. We'll be using the same configuration used for `awscli` to provision a packer image with [AWS System Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) (yes it's a long and ridiculous name for an otherwise cool tool.) 
+
+#### Pre-Flight
+
+1. Create a new IAM user with "Access Key - Programmatic Access" then press `Next`
+2. Select the "Attach existing policies directly", Select "Administrator Access" and then press `Next`
+  - **NOTE** This is for demonstration purposes only and an account with a locked down policy should be created for production applications.
+3. Press `Next` at the tags screen
+4. Press `Create User` button and then store the Access and Secret keys in your password manager
+5. Install [awscli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+6. Configure [awscli](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) and set the default region as `us-east-1`
+7. Verify that your credentials work: `aws sts get-caller-identity`
+8. Clone [jperez3/taccoform-packer](https://github.com/jperez3/taccoform-packer) and browse to the `basic` folder
+9. Install [Packer](https://www.packer.io/downloads)
+10. Install [Terraform](https://www.terraform.io/downloads.html)
+11. Install the [AWS Session Manager Plugin](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+
+
+#### Terraform
+
+You thought there would be no terraform in this post, I did too. It turns out that you need a few things for this to work. You need a VPC, an IAM policy to allow access to session manager on an instance and a role/profile to attach it to said instance. For a closer look at what is being provisioned, check out [packer.tf](https://github.com/jperez3/taccoform-packer/blob/main/basic/packer.tf)
+
+1. Run `terraform init`
+2. Run `terraform apply -auto-approve`
+3. Set the VPC ID from the terraform output as an environment variable that packer can read: `export PKR_VAR_vpc_id=$(terraform output -raw vpc_id)`
+4. Set the Subnet ID from the terraform output as an environment variable that packer can read: `export PKR_VAR_subnet_id=$(terraform output -raw private_subnet_id)`
+5. Verify that both variables were set, eg `echo $PKR_VAR_vpc_id`
+
+
+#### Packer
+
+
+Now on to the main attraction, you are now read to build your first Amazon AMI with Packer. From the `basic` directory, run the following:
+
+1. Intialize the AWS Packer plugin: `packer init plugins.pkr.hcl`
+2. Kick of image creation: `packer build .`
+
+* During the build process the output will show you what it's doing, here is a general overview:
+  * Validating input parameters
+  * Generating keypair for build
+  * Launching an instance
+  * Waiting for SSH to respond over AWS Session Manager
+  * Running any defined provisioners
+  * Stopping instance
+  * Creating AMI from configured instance 
+  * Deleting instance 
+
+* You might get an error like the one below, but the build will complete successfully and produce an AMI:
+
+```
+==> amazon-ebs.linux: Bad exit status: -1
+==> amazon-ebs.linux: Cleaning up any extra volumes...
+==> amazon-ebs.linux: No volumes to clean up, skipping
+==> amazon-ebs.linux: Deleting temporary security group...
+==> amazon-ebs.linux: Deleting temporary keypair...
+Build 'amazon-ebs.linux' finished after 6 minutes 25 seconds.
+
+==> Wait completed after 6 minutes 25 seconds
+
+==> Builds finished. The artifacts of successful builds are:
+--> amazon-ebs.linux: AMIs were created:
+us-east-1: ami-0e1fa6b889312345
+```
+
+3. Now you can see the AMI in the AWS console, or you can check it out via `awscli`: `aws ec2 describe-images --filters "Name=tag:Service,Values=burrito"`
+
+* If you wanted to reference this AMI in terraform, you can use a data source lookup to fetch the AMI ID and pass it to an AWS instance resource:
+
+```hcl
+data "aws_caller_identity" "current" {}
+
+data "aws_ami" "burrito" {
+  most_recent = true
+
+  filter {
+    name   = "Service"
+    values = ["burrito"]
+  }
+
+  owners = [data.aws_caller_identity.current.account_id] # your account id 
+}
+
+resource "aws_instance" "burrito" {
+  ami           = data.aws_ami.burrito.id
+  instance_type = "t3.micro"
+
+  tags = {
+    Name = "web0-burrito-prod"
+  }
+}
+```
+
+
+4. After you're done testing/building, dont forget to run `terraform destroy` in the workspace
+
 ### In Review
 
+Packer is a great tool for pre-baking images so they be provisioned more quickly and easily replaced. Using Packer with AWS Session Manager feels like a welcome cheat code and I hope this tutorial helps you on your cloud journey. 
 
 
 ---
