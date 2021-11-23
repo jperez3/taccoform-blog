@@ -23,7 +23,7 @@ You've decided to focus on learning AWS, but you keep seeing tweets that warn yo
 
 ### What is a NAT?
 
-A NAT is a device which allows servers on your private networks to reach the Internet. Without an NAT, your servers can't interact with outside services and run updates. This is like having a taco truck without windows and trying to take orders. Yes you can work around this obsticle, but it's not an efficient way to work. 
+A NAT is a device which allows servers on your private networks to reach the Internet. Without an NAT, your servers can't interact with outside services and run updates. This is like having a taco truck without windows and trying to take orders. Yes you can work around this obstacle, but it's not an efficient way to work. 
 
 For a deeper dive into VPC components, check out J Cole Morrison's [AWS VPC Core Concepts](https://start.jcolemorrison.com/aws-vpc-core-concepts-analogy-guide/)
 
