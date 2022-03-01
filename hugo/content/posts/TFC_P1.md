@@ -1,16 +1,16 @@
 +++
 title =  "Bootstrapping a new service in 60 seconds with Github, IAM, ECR, and OpenID Connect"
 tags = ["terraform", "tutorial", "aws", "terraform1.0", "openidconnect", "ecr","github", "githubactions"]
-date = "2022-02-27"
+date = "2022-03-01"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfc_p1/header.jpg)
 
 
 # Overview
 
-You've built a few containerized services in AWS and there's still a lot of work that needs to get done before you can have a new service ready to deploy onto ECS or EKS. You may need to create a new Github repo, write a `Jenkinsfile` for the build process, provision a new service account, and build a new ECR repo in terraform. All this work adds up and is error-prone when done in manual steps. Today we'll go over how to quickly build a new and secure service. The first service may take a little longer to create, but depending on your copy/paste skills (I see you StackOverflow), you can create the 2nd/3rd/4th service in 60 seconds or less.
+You've built a few containerized services in AWS and there's still a lot of work that needs to get done before you can have a new service ready to deploy onto ECS or EKS. You may need to create a new Github repo, write a `Jenkinsfile` for the build process, provision a new service account, and build a new ECR repo in terraform. All this work adds up and is error-prone when done in manual steps. Today we'll go over how to quickly build a new and secure service. The first service may take a little longer to create, but depending on your copy/paste skills, you can create the 2nd/3rd/4th service in 60 seconds or less.
 
 
 ## Lesson
