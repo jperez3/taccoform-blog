@@ -10,7 +10,7 @@ date = "2022-04-26"
 
 # Overview
 
-One of the first things you learn with Terraform is that you need a way to authenticate and how to pass those credentials to Terraform. You can use environment variables, the `-var` flag, or use a `.tfvars` file to pass sensitive information from you to the provider. These methods create a security gap because anyone with access to your terminal has the keys to the city. Against our best judgement, we sometimes store these credentials our dotfiles, exchanging security for convenience. There are several tools out there to help align security and convenience for setting credentials. If you're a 1Password customer, the new 1Password CLI 2.0 is a great fit for many scenarios. Today we'll use 1Password CLI to show how you can pass credentials from one of your vaults to the Terraform provider.
+One of the first things you learn with Terraform is that you need a way to authenticate and how to pass those credentials to Terraform. You can use environment variables, the `-var` flag, or use a `.tfvars` file to pass sensitive information from you to the provider. These methods create a security gap because anyone with access to your computer can see the secrets. Against our best judgement, we sometimes store these credentials our dotfiles, exchanging security for convenience. There are several tools out there to help align security and convenience for setting credentials. If you're a 1Password customer, the new 1Password CLI 2.0 is a great fit for many scenarios. Today we'll use 1Password CLI to show how you can pass credentials from one of your vaults to the Terraform provider.
 
 
 ## Lesson
