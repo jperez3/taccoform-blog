@@ -1,14 +1,16 @@
 +++
 title =  "Securing Terraform Credentials With 1Password"
 tags = ["terraform", "tutorial", "1password"]
-date = "2022-04-24"
+date = "2022-04-26"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p5/header.jpg)
 
 
 # Overview
+
+One of the first things you learn with Terraform is that you need a way to authenticate and how to pass those credentials to Terraform. You can use environment variables, the `-var` flag, or use a `.tfvars` file to pass sensitive information from you to the provider. These methods create a security gap because anyone with access to your terminal has the keys to the city. Against our best judgement, we sometimes store these credentials our dot file, exchanging security for convenience. There are several tools out there to help align security and convenience for setting credentials. If you're a 1Password customer, the new 1Password CLI 2.0 is a great fit for many scenarios. Today we'll use 1Password CLI to show how you can pass credentials from one of your vaults to the Terraform provider.
 
 
 ## Lesson
@@ -99,7 +101,9 @@ Now **any** CLI tool which uses environment variables to inject secrets can quer
 
 ### 1Password CLI And Terraform
 
-Normally I would start with an AWS example to demonstrate this functionality, but there's already a great tool to help with credential management called [aws-vault](https://github.com/99designs/aws-vault). This method is more for APIs which don't have their own dedicated credential management tool. Since I want to keep it related to Infrastructure as Code, we'll use DigitalOcean as the cloud provider.
+Normally I would start with an AWS example to demonstrate this functionality, but there's already a great tool to help with credential management called [aws-vault](https://github.com/99designs/aws-vault). This method is more for APIs which don't have their own dedicated credential management tool. Since we want to keep it related to building infrastructure, we'll use DigitalOcean as the cloud provider.
+
+_Note: If you don't have a DigitalOcean account, you can use [this referral link](https://m.do.co/c/d26a4fc22a12) to open an account and get free credit to follow along without having to pay._
 
 1. Log into DigitalOcean and browse to `API>Applications & API>Tokens/Keys>Personal Access Tokens`
 2. Create a new access token called `taccoform-demo`
@@ -261,7 +265,7 @@ alias do='docker run --rm --interactive --tty --env-file <(op run --no-masking -
 ```
 
 
-_After you're done messing around, delete your droplet by running: `op run -- terraform destroy`_
+**After you're done messing around, delete your droplet by running: `op run -- terraform destroy` AND don't forget to delete the `taccform-demo` 1Password Vault**
 
 
 ### In Review
