@@ -137,7 +137,7 @@ resource "digitalocean_droplet" "taccoform" {
 ```
 5. After saving, run `op run -- terraform init`
 
-```hcl
+```bash
 $ op run -- terraform init
 
 Initializing the backend...
@@ -169,7 +169,7 @@ commands will detect it and remind you to do so if necessary.
 
 6. Now run `op run -- terraform apply` to create the droplet:
 
-```hcl
+```bash
 $ op run -- terraform apply
 
 Terraform used the selected providers to generate the following execution
