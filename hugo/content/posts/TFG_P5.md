@@ -48,7 +48,7 @@ One of the first things you learn with Terraform is that you need a way to authe
 
 To keep things organized and separate for this demo, we'll add a new 1Password vault. This will make it easier to clean up later.
 
-1. Create a new `taccoform-dmeo` vault by running: `op vault create taccoform-demo`
+1. Create a new `taccoform-demo` vault by running: `op vault create taccoform-demo`
 
 ```bash
 $ op vault create taccoform-demo
