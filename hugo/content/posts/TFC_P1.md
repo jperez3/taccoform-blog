@@ -30,7 +30,7 @@ OpenID Connect (OIDC) is the new thing all the kids are raving about. Previously
 #### Creating the OIDC Provider
 
 1. You will need to create a terraform workspace separate from the new service that you want to bootstrap. Ideally this is a place where other "global" or account level AWS resources live.
-2. Once that is created, you need to follow [these awful instructions](https://docs.aws.amazon.com/IAM/latest/UserGuide/ to grab the thumbprint for the OIDC provider resource. You will need to remove all `:`'s from the thumbprint.
+2. Once that is created, you need to follow [these awful instructions](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc_verify-thumbprint.html) to grab the thumbprint for the OIDC provider resource. You will need to remove all `:`'s from the thumbprint.
 3. You will deploy the OpenID Provider resource in the previously mentioned workspace:
 
 ```hcl
