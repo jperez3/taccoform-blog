@@ -5,7 +5,7 @@ date = "2022-11-16"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p6/header.jpg)
 
 
 # Overview
@@ -34,6 +34,16 @@ When it comes to SaaS providers which allow multiple accounts or require separat
 ### Demo
 
 To show how you can leverage multiple cloud providers, I will be creating a small web service. The web service will include a DigitalOcean droplet, a Cloudflare DNS record to take advantage of Cloudflare's CDN/WAF, and a CNAME record in AWS's Route53. You might ask, why the two DNS records? This scenario is good when you don't want Cloudflare to be your authoratative DNS for your domain name. You can select if and when individual services use Cloudflare's Web Application Firewall.
+
+```
+Client Request (salas.tacoform.com)
+    └--->Internet
+            └--->NS Records(tacoform.com)
+                    └--->AWS Route53(salsa.tacoform.com.cdn.cloudflare.net)
+                            └--->Cloudflare DNS/WAF/CDN(salsa.tacoform.com)
+                                    └--->DigitalOcean Droplet(nginx)
+
+```
 
 
 
@@ -127,6 +137,8 @@ resource "digitalocean_droplet" "web" {
 }
 ```
 _Note: Compare the two DNS record resources. They are similar, but different. Differences like these make it harder to migrate from one cloud provider to the next. They all have different naming and parameter requirements which means IaC alone can't be a fully cloud agnostic solution._
+
+* Check out how the DigitalOcean droplet resource is passing its ipv4 public IP address to the cloudflare DNS record resource. This is one way to pass information between different providers.
 
 
 5. We can now move on to the workspace, eg. `taccoform-multi-provider-demo/workspaces/prod/base`
@@ -317,7 +329,8 @@ salsa.tacoform.com.cdn.cloudflare.net. 3600 IN A 138.68.5.70
 ```
 _Note: `curl` and `dig` are great tools to have in your arsenal for debugging/validating your provisioned infrastructure_
 
-* For the full code, check out the [taccoform-multi-provider-demo](https://github.com/jperez3/taccoform-multi-provider-demo) repo.
+* Check out the [taccoform-multi-provider-demo](https://github.com/jperez3/taccoform-multi-provider-demo) repo to see the code for this demo.
+* For a list of providers, check out the [Terraform Provider Registry](https://registry.terraform.io/browse/providers), I would recommend sticking to "Official" and "Partner" tiered providers for business critical infrastructure.
 
 
 
