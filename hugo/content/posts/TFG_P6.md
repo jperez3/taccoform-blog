@@ -33,10 +33,10 @@ When it comes to SaaS providers which allow multiple accounts or require separat
 
 ### Demo
 
-To show how you can leverage multiple cloud providers, I will be creating a small web service. The web service will include a DigitalOcean droplet, a Cloudflare DNS record to take advantage of Cloudflare's CDN/WAF, and a CNAME record in AWS's Route53. You might ask, why the two DNS records? This scenario is good when you don't want Cloudflare to be your authoratative DNS for your domain name. You can select if and when individual services use Cloudflare's Web Application Firewall.
+To show how you can leverage multiple cloud providers, I will be creating a small web service. The web service will include a DigitalOcean droplet, a Cloudflare DNS record to take advantage of Cloudflare's CDN/WAF, and a CNAME record in AWS's Route53. You might ask, why the two DNS records? This scenario is good when you don't want Cloudflare to be the authoritative DNS for your domain. You can select if and when individual services use Cloudflare's Web Application Firewall.
 
 ```
-Client Request (salas.tacoform.com)
+Client Request (salsa.tacoform.com)
     └--->Internet
             └--->NS Records(tacoform.com)
                     └--->AWS Route53(salsa.tacoform.com.cdn.cloudflare.net)
