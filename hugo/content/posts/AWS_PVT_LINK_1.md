@@ -1,14 +1,16 @@
 +++
 title =  "AWS PrivateLink Part 1"
-tags = ["PrivateLink", "tutorial", "aws"]
-date = "2022-11-30"
+tags = ["privatelink", "tutorial", "aws", "vpc"]
+date = "2022-12-07"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+![Ceviche](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/aws_pvt_link_1/header.jpg)
 
 
 # Overview
+
+Your company is growing and now you have to find out how to allow communication between services across VPCs and AWS accounts. You don't want send traffic over the public Internet and maintaining VPC Peering isn't a fun prospect. Implementing an AWS supported solution is the top priority and AWS PrivateLink can be a front-runner for enabling your infrastructure to scale.
 
 
 ## Lesson
@@ -68,14 +70,15 @@ Like anything else, PrivateLink relies on DNS. You can send traffic through priv
 * The VPC Endpoint and VPC Endpoint Service must be in the same AWS Region.
 * AWS PrivateLink requires the Consumer and Provider VPCs to share the same Availability Zones, which becomes a problem when configuring PrivateLink across AWS Accounts. `us-east-1a` isn't necessarily `us-east-1a` in every account. AWS remaps Availability Zones to spread their customer load more evenly across the region's provisioned AZs.
 * Because of this AZ mismatch, you will need to either extend your VPC's existing private subnets to provide coverage to all AZs or create dedicated PrivateLink subnets which span all of the region's AZs. With all AZs covered, you won't run into provisioning errors when configuring PrivateLink
-* In order for private DNS to work, the consumer VPC needs both "Enable DNS Hostnames" and "Enable DNS Support" enabled for PrivateLink to route traffic properly.
+* In order for private DNS to work, the Consumer VPC needs both "Enable DNS Hostnames" and "Enable DNS Support" enabled for PrivateLink to route traffic properly.
 * The private DNS TXT validation on the VPC Endpoint can be fickle. You may need to go into the AWS console (or use AWSCLI) to re-try the validation.
 * Validating end-to-end connectivity can be hard if DNS is not configured, you may need to use `curl` with the ignore certificate errors flag.
   * eg: `curl -k https://burrito.tacoform.com`
-*
+
 
 ### In Review
 
+This may or my not have made sense, but hopefully this explanation of AWS PrivateLink can help you decide if it's valuable to you and your organization. In the next post, we will explore how to provision AWS PrivateLink across VPCs using Terraform.
 
 
 ---
