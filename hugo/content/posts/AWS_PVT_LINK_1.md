@@ -78,7 +78,7 @@ Like anything else, PrivateLink relies on DNS. You can send traffic through priv
 
 ### In Review
 
-This may or my not have made sense, but hopefully this explanation of AWS PrivateLink can help you decide if it's valuable to you and your organization. In the next post, we will explore how to provision AWS PrivateLink across VPCs using Terraform.
+This may or my not have made sense, but hopefully this explanation of AWS PrivateLink can help you decide if it's valuable to you and your organization. In the [next post](https://www.taccoform.com/posts/aws_pvt_link_2), we will explore how to provision AWS PrivateLink across VPCs using Terraform.
 
 
 ---
