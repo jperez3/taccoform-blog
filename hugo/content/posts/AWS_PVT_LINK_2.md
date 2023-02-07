@@ -1,18 +1,19 @@
 +++
 title =  "AWS PrivateLink Part 2"
 tags = ["privatelink", "tutorial", "aws", "vpc", "vpc-endpoint"]
-date = "2022-02-03"
+date = "2022-02-06"
 +++
 
 
-![Tostada](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/aws_pvt_link_2/header.jpg)
+![Tostada](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/aws_pvt_link_1/header.jpg)
 
 
 # Overview
 
+ In the previous PrivateLink post, we went through the separate resources that make up AWS PrivateLink. In this post, we will be provisioning a PrivateLink configuration which will allow resources in one VPC to connect to a web service in another VPC. You can use several different AWS services to accomplish the same goal, but PrivateLink can simplify some setups and meet security expectations with its standard one-way communication.
 
 
-
+![PrivateLink](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/aws_pvt_link_2/tacoform-privatelink.jpg)
 ## Lesson
 
 * Building Two VPCs
@@ -245,9 +246,9 @@ _Note: To see the entire module, you can visit the [tostada service module](http
 
 Some things to note for the Provider VPC PrivateLink resources:
 * You want to enable auto acceptance on the VPC endpoint Service resource to make things more automated
-* Enabling private DNS on the VPC Endpoint Service resource will allow Consumer VPCs to use your domain and HTTPS connections (eg. tostada.provider-prod.tacoform.com)
-* The VPC Endpoint Service Allowed Principal resource is what will allow Consumer VPCs in different AWS accounts to connect to this Provider VPC. You will need to populate this list prior to attempting any connectivity.
-* The Route53 record is required to automatically verify ownership of the domain to allow you to use your own DNS Zone
+* Enabling private DNS on the VPC Endpoint Service resource will allow Consumer VPCs to use your domain and HTTPS connections (eg. tostada.provider-prod.tacoform.com instead of the Amazon provided DNS name)
+* The VPC Endpoint Service Allowed Principal resource is what will allow Consumer VPCs in different AWS accounts to connect to this Provider VPC. You will need to populate this list prior to attempting any connectivity from a Consumer VPC.
+* The Route53 record is required to automatically verify ownership of the domain to allow you to use your own DNS Zone.
 * When AWS says "private DNS", it just means your own domain (eg. `tacoform.com`). It doesn't mean private or public DNS zones.
 * During initial provisioning, you may run into errors related to the private DNS not validating in time, you can re-run the validation step by grabbing the VPC Endpoint Service ID and re-validating via `awscli`:
 
@@ -302,7 +303,7 @@ resource "aws_vpc_endpoint" "privatelink" {
 _Note: To see the entire module, you can visit the [VPC Endpoint module](https://github.com/jperez3/taccoform-privatelink-demo/tree/main/infra/modules/vpc-endpoint)_
 
 
-If you put the two resources in a module, you can group together the Consumer VPCs to avoid needing separate workspaces per Consumer VPC:
+If you put the two resources in a module, you can group together Consumer VPCs in the same AWS account to avoid needing separate workspaces per Consumer VPC:
 ```hcl
 module "service_consumer" {
     source = "../../modules/vpc-endpoint"
@@ -335,7 +336,7 @@ sh-4.2$ curl https://tostada.provider-prod.tacoform.com
 <html><body><h1>IT'S TOSTADA TIME</h1></body></html>
 ```
 
-You can also check DNS with `dig` to see how the VPC DNS hijacks the request for `tostada.provider-prod.tacoform.com` and points them to Elastic Network Interfaces assigned to the VPC Endpoint for the `tostada` PrivateLink config:
+You can also check DNS with `dig` to see how the Consumer VPC DNS resolves the request for `tostada.provider-prod.tacoform.com` and points them to Elastic Network Interfaces (ENIs) assigned to the VPC Endpoint for the `tostada` PrivateLink config:
 
 ```bash
 $ dig tostada.provider-prod.tacoform.com +noall +answer
@@ -347,11 +348,13 @@ tostada.provider-prod.tacoform.com. 60 IN A     10.2.4.142
 ```
 _Note: Notice how the IPs live within the CIDR block we've created for the Consumer VPC (10.2.0.0/16)_
 
-
+If you deployed the `vpc`, `tostada`, and `vpc-endpoint` modules, be sure to destroy those workspaces to avoid any unnecessary AWS charges
 
 
 
 ### In Review
+
+We've set up two VPCs (one Consumer, one Provider) and created a one way trust allowing resources in the Consumer VPC to reach the `tostada` web service in the Provider VPC. This simple example can be expanded by mapping one Provider VPC service to **many** Consumer VPCs (as long as they are in the same region which is an AWS limitation.) In the future, AWS can expand the resources to share across PrivateLink which will make it even more useful. That being said, the main use-case of sharing web services is compelling enough to start using PrivateLink.
 
 
 
