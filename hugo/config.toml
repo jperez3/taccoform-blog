@@ -1,4 +1,4 @@
-baseURL = "https://www.taccoform.com/"
+baseURL = "/"
 languageCode = "en-us"
 title = "Taccoform"
 theme = "m10c"
