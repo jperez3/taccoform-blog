@@ -1,7 +1,7 @@
 +++
 title =  "AWS PrivateLink Part 2"
 tags = ["privatelink", "tutorial", "aws", "vpc", "vpc-endpoint"]
-date = "2022-02-06"
+date = "2023-02-06"
 +++
 
 
