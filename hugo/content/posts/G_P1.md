@@ -1,7 +1,7 @@
 +++
 title =  "Migrating To Multi-Cloud And Reducing My Personal Cloud Bill By 80%"
 tags = ["terraform","cloudflare","digitalocean","multi-cloud"]
-date = "2023-8-14"
+date = "2023-08-14"
 +++
 
 
