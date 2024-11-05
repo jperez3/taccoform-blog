@@ -1,21 +1,22 @@
 +++
 title =  "Upgrading to mysql 8.0 with blue green deployments"
 tags = ["blue-green","aws","rds","aurora","mysql","terraform"]
-date = "2024-10-25"
+date = "2024-11-04"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/blue_green/header.jpg)
+![Ceviche](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/blue_green_mysql/header.jpg)
 
 
 # Overview
 
-It's everyone's favorite task, database upgrade time. I think we're all are inheritely afraid of messing up a production database. Some of us have even been through the fire and lived to tell about it. Either way, upgrades need to happen and this time is no different. AWS has made a very compelling case to upgrade from mysql 5.7 to 8.0 by introducing extended support for Aurora database clusters. All mysql 5.7 aurora database will be automatically enrolled in extended support at the end of October 2024. After enrollment, you can expect to expect to find some new unpleasant charges on your AWS bill.
+It's everyone's favorite task, database upgrade time. I think we're all afraid of messing up a production database. Some of us have been through the fire and lived to tell about it. Either way, upgrades need to happen and this time is no different. AWS has made a very compelling case to upgrade from mysql 5.7 to 8.0 by introducing extended support for Aurora database clusters. All mysql 5.7 aurora database will be automatically enrolled in extended support at the end of October 2024. After enrollment, you can expect to expect to find new and unpleasant charges on your AWS bill.
 
 
 
 ## Lesson
 
+* Why Blue-Green?
 * Parameter Groups
 * Application Changes
 * Creating a Blue-Green Deployment
@@ -28,6 +29,12 @@ It's everyone's favorite task, database upgrade time. I think we're all are inhe
 * Resources
 
 
+
+### Why Blue-Green?
+
+There are many ways to upgrade databases, both with and without AWS's support. The default method for database upgrades is an in-place upgrade. This means the database will be taken offline and RDS will control the upgrade procedure based on your desired destination. This may include bumping to a minor version or two to get to a point where it can upgrade the major version. With this, the in-place upgrade would reboot the database several times, resulting in a full outages and could take a long time which may not be acceptable for the business.
+
+Enter Blue-Green deployments. AWS has created an easier way to upgrade with built-in safety features and a low downtime experience. The blue-green deployment is treated as it's own resource and sits above your existing Aurora cluster. Once created, it starts working on spinning up a new Aurora cluster which will act as your new (or "green") cluster. Once online, your existing cluster will turn into your "blue" cluster. The blue cluster will replicate its data over to the green cluster and will continue to do so until you are ready to make your new green cluster live.
 
 ### Parameter Groups
 
@@ -57,9 +64,13 @@ If you are using an ALB with Listener Rules, you can create a new rule with the 
 
 Initiating the switching over to the green cluster is easy, you just have to select the blue-green deployment within the RDS console, select _Actions_ in the upper-right corner of the screen and select "Switch over." AWS will start by running pre-checks to make sure the green cluster is ready to take over, stops incoming database connections, syncs over any remaining changes, and promotes the green cluster. AWS promotes the green cluster by renaming it to blue cluster's name and renaming the blue cluster by appending "-old1" to the end.
 
+If the pre-checks fail, AWS will give you a detailed output of the failures for you to remediate. These issue must be fixed before you can proceed with the upgrade, there's no "YOLO upgrade" mode and that's probably in your best interest.
+
 
 
 ### Testing
+
+Functional and performance testing will need to take place to make sure your application is working as expected after the mysql upgrade. This is another reason why it's important to have team alignment for major upgrades. If you just upgrade all the databases and leave others to deal with the impact, I'm willing to bet that you'll have angry internal and external customers. Having repeatable testing methods before and after the upgrades are crucial for identifying potential issues prior to reaching production.
 
 
 ### Rollback Options
@@ -117,7 +128,7 @@ If you've worked with AWS and IaC long enough, you're probably aware of the prob
 
 ### In Review
 
-
+Although a thankless task, database upgrades need to happen. Hopefully blue-green can be another tool in your toolbelt to streamline the process with minimal downtime.
 
 ---
 _As always, feel free to reach out on twitter via [@taccoform](https://twitter.com/taccoform) for questions and/or feedback on this post_
