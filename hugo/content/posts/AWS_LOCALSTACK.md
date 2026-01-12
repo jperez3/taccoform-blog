@@ -11,7 +11,7 @@ date = "2026-01-12"
 # Background
 
 
-Several years ago, I took LocalStack for a test drive. The concept alone was insane. LocalStack allows you to provision infrastructure locally and interact with it via a seemingly identical API as AWS. I commended the team behind LocalStack for such an ambitious project and couldn't fault them for the rough edges.
+Several years ago, I took LocalStack for a test drive. The concept alone was wild. LocalStack allows you to provision infrastructure locally and interact with it via a seemingly identical API as AWS. I commended the team behind LocalStack for such an ambitious project and couldn't fault them for the rough edges.
 
 5+ years later, I decided to try them out again after spending way too much time rebuilding RDS clusters. If you've spent any amount of time with RDS, you know that provisioning and destroying resources takes way too long, sometimes over an hour.
 
