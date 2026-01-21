@@ -1,11 +1,11 @@
 +++
 title =  "Migrating from any S3 compliant storage to Cloudflare R2"
-tags = ["aws","s3","cloudflare","digitalocean"]
+tags = ["aws","s3","cloudflare","r2","digitalocean"]
 date = "2026-01-20"
 +++
 
 
-![Tacos](https://static.taccoform.com/static/posts/cf_r2_p1/header.jpg)
+![Ollantaytambo](https://static.taccoform.com/static/posts/cf_r2_p1/header.jpg)
 
 
 # Overview
