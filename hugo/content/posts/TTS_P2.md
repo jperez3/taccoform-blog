@@ -5,18 +5,18 @@ date = "2020-11-07"
 +++
 
 
-![tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p2/header.jpg)
+![tacos](https://static.taccoform.com/static/post/tts_p2/header.jpg)
 
 # Overview
 
-Wecome back Taccoformers! In the previous tutorial, you got up and running with Terraform in DigitalOcean and provisioned a single droplet. In _Part II_ we will focus on building multiple droplets and best practices for keeping your code concise/readable with looping. 
+Wecome back Taccoformers! In the previous tutorial, you got up and running with Terraform in DigitalOcean and provisioned a single droplet. In _Part II_ we will focus on building multiple droplets and best practices for keeping your code concise/readable with looping.
 
 
 # Lesson 2
 
 
 Today's lesson will go over:
-* [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) 
+* [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
 * Terraform's `count` parameter
 * `*` or "splat"
 * Terraform `taint`
@@ -32,7 +32,7 @@ Today's lesson will go over:
 
 ### Don't Repeat Yourself (DRY)
 
-Let's add another nearly identical droplet/server to the mix. With the information you have right now, you might think to copy/paste the resource and change the names like below: 
+Let's add another nearly identical droplet/server to the mix. With the information you have right now, you might think to copy/paste the resource and change the names like below:
 
 `droplet.tf`
 ```hcl
@@ -177,10 +177,10 @@ Terraform will perform the following actions:
 Plan: 2 to add, 0 to change, 0 to destroy.
 ```
 
-* Notice how an index is appended to the end of the resource, this is how terraform helps you keep track of unique resources. 
+* Notice how an index is appended to the end of the resource, this is how terraform helps you keep track of unique resources.
  -  eg. `digitalocean_droplet.web[0] will be created`
 
-* The count index starts at `0` and maps directly to your naming at `web0`. You can do something like `"web${count.index+1}-burrito-prod"` to start the droplet naming at `web1`, but then the index `0` would map to `web1`. My personal preference is to align index and droplet name. 
+* The count index starts at `0` and maps directly to your naming at `web0`. You can do something like `"web${count.index+1}-burrito-prod"` to start the droplet naming at `web1`, but then the index `0` would map to `web1`. My personal preference is to align index and droplet name.
 
 6. Run a `terraform apply` and approve changes when prompted:
 
@@ -206,13 +206,13 @@ droplet_public_ips = [
   "169.99.0.1",
   "169.99.0.2",
 ]
-``` 
+```
 
-* The `droplet_public_ips` output shows you the public IPs of your two droplets, but doesn't tell you which IP corresponds to which droplet. In this situation, you can assume the first IP maps to `web0` and the second maps to `web1`. This works for a few droplets, but can become confusing when supporting many droplets. 
+* The `droplet_public_ips` output shows you the public IPs of your two droplets, but doesn't tell you which IP corresponds to which droplet. In this situation, you can assume the first IP maps to `web0` and the second maps to `web1`. This works for a few droplets, but can become confusing when supporting many droplets.
 
-* After a couple of minutes of provisioning, you can open your favorite browser and navigate to each IP address (eg http://1.2.3.4) to verify that the terraform `output` matches the hostname provided via your browser. 
+* After a couple of minutes of provisioning, you can open your favorite browser and navigate to each IP address (eg http://1.2.3.4) to verify that the terraform `output` matches the hostname provided via your browser.
 
-### Managing droplets with count 
+### Managing droplets with count
 
 * Since these are near identical droplets serving the same traffic, you can increase or decrease the number of instances depending on how many users are going to your website
 1. Lets bump the `count` parameter to 3, save the `droplet.tf` file and run `terraform apply`:
@@ -249,7 +249,7 @@ resource "digitalocean_droplet" "web" { ...
                      |            |  |
                      V            V  V
             digitalocean_droplet.web[1]
-```                   
+```
 
 2. To `taint` the `web1` resource, run `terraform taint digitalocean_droplet.web[1]`:
 
@@ -341,7 +341,7 @@ _Notice how `web1`'s rebuild causes the unique `id` to change and it gives the n
 
 ## For Each
 
-* Count has been around for a while in terraform, but due to the inability to handle more complex inputs, the `for_each` parameter has been introduced to the terraform resource definition. 
+* Count has been around for a while in terraform, but due to the inability to handle more complex inputs, the `for_each` parameter has been introduced to the terraform resource definition.
 
 1. Let's start by commenting out the existing resource definition and output by adding a `#` to each line:
 
@@ -414,9 +414,9 @@ resource "digitalocean_droplet" "web" {
     - Terraform will start wit the `image` parameter, but that's a statically set value, so the loop doesn't need to do anything else for that parameter and moves on.
     - On `name`, terraform will recognize `each.value` and replace it with `web0-burrito-prod`
     - Terraform will recognize `region` and `size` parameters as statically set values, so the loop doesn't need to do anything else for those parameter and moves on.
-    - On `ssh_keys`, some variable interpolation happens, but not related to the loop. `data.digitalocean_ssh_key.root.id` is a reference to the resource lookup at the top of your `droplets.tf` file. 
-    - On `user_data`, the loop recognizes `each.value` at the end and substitutes `web0-burrito-prod` in its place. 
-    - Terraform will then go to the next object in the `for_each` _map_ (`"web1" = "web1-burrito-prod"`) and go through the same parameter checking process as it did with `"web0" = "web0-burrito-prod"`. After going through `"web1" = "web1-burrito-prod"`, the loop will end and have created two new web droplets. 
+    - On `ssh_keys`, some variable interpolation happens, but not related to the loop. `data.digitalocean_ssh_key.root.id` is a reference to the resource lookup at the top of your `droplets.tf` file.
+    - On `user_data`, the loop recognizes `each.value` at the end and substitutes `web0-burrito-prod` in its place.
+    - Terraform will then go to the next object in the `for_each` _map_ (`"web1" = "web1-burrito-prod"`) and go through the same parameter checking process as it did with `"web0" = "web0-burrito-prod"`. After going through `"web1" = "web1-burrito-prod"`, the loop will end and have created two new web droplets.
 
 
 
@@ -424,14 +424,14 @@ resource "digitalocean_droplet" "web" {
 
 ```hcl
 output "droplet_public_ips" {
-  value       = { 
+  value       = {
     for droplet in digitalocean_droplet.web:
-    droplet.name => droplet.ipv4_address 
+    droplet.name => droplet.ipv4_address
   }
 }
 ```
 * As you might have noticed, the output is a bit more complex than the output for droplets created with `count`
-* Walking through this, the output uses `for` (or a for loop) to go through each of the droplets created with `for_each` in the `digitalocean_droplet` `web` resource definition. It adds a new object to the `droplet_public_ips` `output` map with the droplet name as the _key_ and the droplet ip address as the `value`  
+* Walking through this, the output uses `for` (or a for loop) to go through each of the droplets created with `for_each` in the `digitalocean_droplet` `web` resource definition. It adds a new object to the `droplet_public_ips` `output` map with the droplet name as the _key_ and the droplet ip address as the `value`
 
 
 
@@ -551,7 +551,7 @@ droplet_public_ips = {
 }
 ```
 * As you can see `droplet_public_ips` output is waaaay more clear to see the mapping of droplet to ip address.
-* After a couple of minutes of provisioning, you can open your favorite browser and navigate to each IP address (eg http://1.2.3.4) to verify that the terraform `output` matches the hostname provided via your browser. 
+* After a couple of minutes of provisioning, you can open your favorite browser and navigate to each IP address (eg http://1.2.3.4) to verify that the terraform `output` matches the hostname provided via your browser.
 * **Destroy** the droplets when you are done by running `terraform destroy`
 
 #### Pros
@@ -568,14 +568,14 @@ droplet_public_ips = {
 
 ## In Review
 
-![creating_multiple_droplets_with_terraform](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p2/creating_multiple_droplets_with_terraform.png)
+![creating_multiple_droplets_with_terraform](https://static.taccoform.com/static/post/tts_p2/creating_multiple_droplets_with_terraform.png)
 
-* You used `count` and `for_each` to provision multiple droplets 
+* You used `count` and `for_each` to provision multiple droplets
 * You learned how to manage droplets when using `count` and `for_each`
 * You created DRY Terraform code
 
 
-You have several ways to create multiple similar resources at your disposal. I would recommend testing `count` and `for_each` when you are creating resources in terraform. You may also find scenarios where **both** options make things harder to understand/troubleshoot and **not** using loops is the best way to move forward. 
+You have several ways to create multiple similar resources at your disposal. I would recommend testing `count` and `for_each` when you are creating resources in terraform. You may also find scenarios where **both** options make things harder to understand/troubleshoot and **not** using loops is the best way to move forward.
 
 
 

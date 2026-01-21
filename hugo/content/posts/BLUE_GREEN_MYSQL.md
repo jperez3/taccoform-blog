@@ -5,7 +5,7 @@ date = "2024-11-04"
 +++
 
 
-![Ceviche](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/blue_green_mysql/header.jpg)
+![Ceviche](https://static.taccoform.com/static/post/blue_green_mysql/header.jpg)
 
 
 # Overview

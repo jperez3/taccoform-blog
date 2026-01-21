@@ -5,12 +5,12 @@ date = "2021-11-22"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfm_p5/header.jpg)
+![Tacos](https://static.taccoform.com/static/post/tfm_p5/header.jpg)
 
 
 # Overview
 
-You've decided to focus on learning AWS, but you keep seeing tweets that warn you about the cost of Managed NAT Gateways. The thought of receiving an outragous bill makes you sick to your stomach. The AWS docs don't really help you with alternatives and the "Hello World" tutorials don't tell you how to avoid the big bill. Don't worry, today we're gonna go over Managed NAT Gateways and a cheaper alternative for you to use while learning all 150+ AWS services. 
+You've decided to focus on learning AWS, but you keep seeing tweets that warn you about the cost of Managed NAT Gateways. The thought of receiving an outragous bill makes you sick to your stomach. The AWS docs don't really help you with alternatives and the "Hello World" tutorials don't tell you how to avoid the big bill. Don't worry, today we're gonna go over Managed NAT Gateways and a cheaper alternative for you to use while learning all 150+ AWS services.
 
 
 ## Lesson
@@ -23,20 +23,20 @@ You've decided to focus on learning AWS, but you keep seeing tweets that warn yo
 
 ### What is a NAT?
 
-A NAT is a device which allows servers on your private networks to reach the Internet. Without an NAT, your servers can't interact with outside services and run updates. This is like having a taco truck without windows and trying to take orders. Yes you can work around this obstacle, but it's not an efficient way to work. 
+A NAT is a device which allows servers on your private networks to reach the Internet. Without an NAT, your servers can't interact with outside services and run updates. This is like having a taco truck without windows and trying to take orders. Yes you can work around this obstacle, but it's not an efficient way to work.
 
 For a deeper dive into VPC components, check out J Cole Morrison's [AWS VPC Core Concepts](https://start.jcolemorrison.com/aws-vpc-core-concepts-analogy-guide/)
 
 ### NAT Gateway Vs NAT Instance
 
 
-A Managed NAT Gateway is an AWS managed service which provides a highly available NAT. This hands off approach costs $37/month (+bandwidth) and you need at least one deployed per VPC. A cheaper approach would be to deploy EC2 instances in your public networks to serve as a NAT and is commonly known as a NAT Instance. You can host a NAT Instance for as little as $3/month. It's important to note that using a NAT Gateway in production is considered a best practice for those who don't want to build and maintain the additional redundancy. From an operational perspect, you should eat the cost of a NAT gateway in production because it will be one less thing to worry about. In lower and/or ephemeral environments, you stand to save a lot of money by using NAT Instances. 
+A Managed NAT Gateway is an AWS managed service which provides a highly available NAT. This hands off approach costs $37/month (+bandwidth) and you need at least one deployed per VPC. A cheaper approach would be to deploy EC2 instances in your public networks to serve as a NAT and is commonly known as a NAT Instance. You can host a NAT Instance for as little as $3/month. It's important to note that using a NAT Gateway in production is considered a best practice for those who don't want to build and maintain the additional redundancy. From an operational perspect, you should eat the cost of a NAT gateway in production because it will be one less thing to worry about. In lower and/or ephemeral environments, you stand to save a lot of money by using NAT Instances.
 
 
 
-### Developer NAT Instance VPC 
+### Developer NAT Instance VPC
 
-Another good use of VPCs with NAT Instances is for learning AWS. Accidentally leaving a NAT Gateway provisioned and receiving that AWS bill will definitely kill your motivation. Forgetting to remove NAT instances will sting less. I decided to dig into how to build a NAT gateway for developers and found a couple [great](https://www.kabisa.nl/tech/cost-saving-with-nat-instances/) [resources](https://github.com/Disgruntled/terraform_examples) as jump off points. Once I understood the requirements, I decided to build a low cost [NAT Instance VPC module](https://github.com/jperez3/taccoform-modules/tree/main/vendors/aws/vpc/nat-instance). The module contains the VPC, subnets, routing tables, and NAT Instances. I chose to incorporate two NAT Instances to attach one to each availability zone to cut down on cross-AZ transfer costs. Even with this decision, the projected cost is ~$6/month using `t4g.nano` Gravitron2 instances.    
+Another good use of VPCs with NAT Instances is for learning AWS. Accidentally leaving a NAT Gateway provisioned and receiving that AWS bill will definitely kill your motivation. Forgetting to remove NAT instances will sting less. I decided to dig into how to build a NAT gateway for developers and found a couple [great](https://www.kabisa.nl/tech/cost-saving-with-nat-instances/) [resources](https://github.com/Disgruntled/terraform_examples) as jump off points. Once I understood the requirements, I decided to build a low cost [NAT Instance VPC module](https://github.com/jperez3/taccoform-modules/tree/main/vendors/aws/vpc/nat-instance). The module contains the VPC, subnets, routing tables, and NAT Instances. I chose to incorporate two NAT Instances to attach one to each availability zone to cut down on cross-AZ transfer costs. Even with this decision, the projected cost is ~$6/month using `t4g.nano` Gravitron2 instances.
 
 |                     | Month 1 | Month 2 | Month 3 | Month 4 | Month 5 | Month 6 |
 | :------------------ | :------ | :------ | :------ |:------- |:------- |:------- |
@@ -135,16 +135,16 @@ Keys:  Help   Display mode   Restart statistics   Order of fields   quit
 17. iad23s61-in-f14.1e100.net                               0.0%    23    0.9   0.9   0.9   1.0   0.0
 
 ```
-_Note: the first hop should be the private IP of the NAT Instance in the same AZ as the jumpbox. Press `q` to quit `mtr`._ 
+_Note: the first hop should be the private IP of the NAT Instance in the same AZ as the jumpbox. Press `q` to quit `mtr`._
 
 
-6. End the `ssm` session and destroy provisioned VPC: `terraform destroy` 
+6. End the `ssm` session and destroy provisioned VPC: `terraform destroy`
 
 * The VPC module [README](https://github.com/jperez3/taccoform-modules/blob/main/vendors/aws/vpc/nat-instance/README.md) has more examples and even a minimal deployment which should help while you learn the ins and outs of VPCs.
 
 ### In Review
 
-Using NAT Instances can be a viable alternative to Managed NAT Gateways for those who want to learn AWS and don't want to break the bank. Managed NAT Gateways do have an important role to play, but let's keep them on the corporate AWS bill. 
+Using NAT Instances can be a viable alternative to Managed NAT Gateways for those who want to learn AWS and don't want to break the bank. Managed NAT Gateways do have an important role to play, but let's keep them on the corporate AWS bill.
 
 ---
 _As always, feel free to reach out on twitter via [@taccoform](https://twitter.com/taccoform) for questions and/or feedback on this post_

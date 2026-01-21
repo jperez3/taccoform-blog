@@ -5,7 +5,7 @@ date = "2022-04-26"
 +++
 
 
-![](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p5/header.jpg)
+![](https://static.taccoform.com/static/post/tfg_p5/header.jpg)
 
 
 # Overview

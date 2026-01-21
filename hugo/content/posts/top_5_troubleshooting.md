@@ -5,12 +5,12 @@ date = "2021-01-05"
 +++
 
 
-![not_tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/top_5_troubleshooting/header.jpg)
+![not_tacos](https://static.taccoform.com/static/post/top_5_troubleshooting/header.jpg)
 
 
 # Top 5 Ways to Troubleshoot Terraform
 
-_You're crying on the floor, `terraform apply` errored out again. You tell yourself that you can't go out like this and pull yourself back into your knock off Herman Miller chair._ 
+_You're crying on the floor, `terraform apply` errored out again. You tell yourself that you can't go out like this and pull yourself back into your knock off Herman Miller chair._
 
 Whether you're a terraform beginner or seasoned veteran, troubleshooting errors becomes a part of the terraform ritual. It's hard to keep track of all of the Terraform troubleshooting tricks, so hopefully these 5 tips will help you and/or jog your memory.
 
@@ -33,7 +33,7 @@ Common Provider Documentation:
 
 ### 4. Use Terraform outputs
 
-Terraform outputs give you a way to see things like public IPs after a `terraform apply`, but it's also a good tool for helping you troubleshoot your code. There have been plenty of times where I've tried to pass the wrong variable type or attribute to another resource (or module) and terraform doesn't give you a great error message. You can verify a resource's available attribute's by visiting the documentation for your specific provider. Here is an example of the available attributes for a DigitalOcean [droplet](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/droplet#attributes-reference). If you wanted to pass the IPv4 address of a droplet to another resource, you could verify it by checking the output 
+Terraform outputs give you a way to see things like public IPs after a `terraform apply`, but it's also a good tool for helping you troubleshoot your code. There have been plenty of times where I've tried to pass the wrong variable type or attribute to another resource (or module) and terraform doesn't give you a great error message. You can verify a resource's available attribute's by visiting the documentation for your specific provider. Here is an example of the available attributes for a DigitalOcean [droplet](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/droplet#attributes-reference). If you wanted to pass the IPv4 address of a droplet to another resource, you could verify it by checking the output
 
 ```hcl
 output "droplet_public_ip" {
@@ -78,11 +78,11 @@ I'm joking, sort of. Sometimes you won't be able to tell if the problem is a ter
 
 Terraform code gets complex REAL QUICK. The best way to help you understand your code is to organize it.
 * Skip using `main.tf`, it's the terraform equivalent of the junk drawer in your house. When everything is in one file it's hard to make sense of what is going on.
-* Use multiple `.tf` files with descriptive names like `droplet.tf` and `load_balancer.tf` and put the right resource definitions in those files. 
-    - When creating new modules, you can remove components you're not focusing on by changing the extention (eg. `load_balancer.tfx`) which will make the `terraform` command ignore that file. 
-* The naming isn't set in stone, you can change them at any time as long as you keep the `.tf` extension. 
+* Use multiple `.tf` files with descriptive names like `droplet.tf` and `load_balancer.tf` and put the right resource definitions in those files.
+    - When creating new modules, you can remove components you're not focusing on by changing the extention (eg. `load_balancer.tfx`) which will make the `terraform` command ignore that file.
+* The naming isn't set in stone, you can change them at any time as long as you keep the `.tf` extension.
 * You can organize your resources into multiple files RIGHT NOW. You still want to be careful when copying existing resources into new files, but moving the resources will not trigger terraform changes.
-* Use multiple terraform statefiles/workspaces, don't put all of your resources in a single statefile. Having unrelated resources in the same statefile increases the blast radius when things go wrong and can halt all terraform work until the problem is addressed. 
+* Use multiple terraform statefiles/workspaces, don't put all of your resources in a single statefile. Having unrelated resources in the same statefile increases the blast radius when things go wrong and can halt all terraform work until the problem is addressed.
 
 
 ##### Additional Resources
@@ -94,7 +94,7 @@ Terraform code gets complex REAL QUICK. The best way to help you understand your
 
 ## Conclusion
 
-This isn't an exhaustive list of ways to troubleshoot terraform, but hopefully these 5 tips will help you along the way. 
+This isn't an exhaustive list of ways to troubleshoot terraform, but hopefully these 5 tips will help you along the way.
 
 
 

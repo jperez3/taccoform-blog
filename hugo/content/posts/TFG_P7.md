@@ -5,7 +5,7 @@ date = "2023-07-04"
 +++
 
 
-![Lobster](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p7/lobster.jpg)
+![Lobster](https://static.taccoform.com/static/post/tfg_p7/lobster.jpg)
 
 
 # Overview

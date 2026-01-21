@@ -5,14 +5,14 @@ date = "2021-03-17"
 +++
 
 
-![Photo By Lisa W. on Yelp](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfm_p1/header.jpg)
+![Photo By Lisa W. on Yelp](https://static.taccoform.com/static/post/tfm_p1/header.jpg)
 
 
 # Overview
 
 * What are Terraform modules?
 * Why should I care about Terraform modules?
-* When do I start writing Terraform modules? 
+* When do I start writing Terraform modules?
 * Who benefits from Terraform modules?
 * Where do I store Terraform modules?
 * BONUS: How do I structure Terraform modules?
@@ -22,7 +22,7 @@ date = "2021-03-17"
 
 When I first started writing Terraform, I got lost in the existing Terraform modules created at my employer. With little context, I started interacting with these modules and I quickly lost sight of which way is up. This did not help me learn Terraform. For beginners, I would recommend building Terraform resources on their own and gain a solid understanding of resource definitions, variables, and Terraform CLI commands.
 
-Terraform modules are templates composed of resource definitions, variables, and data source lookups. You can think of this as a ready to eat taco compared to having a taco's individual ingredients. 
+Terraform modules are templates composed of resource definitions, variables, and data source lookups. You can think of this as a ready to eat taco compared to having a taco's individual ingredients.
 
 
 
@@ -33,7 +33,7 @@ At first, it's hard to see the benefit of creating terraform modules because the
 
 ### When do I start writing Terraform modules?
 
-Start today with something small that you understand, this will help lower the barrier of entry. It will also establishing how you and your team creates modules. Don't choose something related to an in-flight company project. The last thing you want to do is slow down the delivery of a product.  
+Start today with something small that you understand, this will help lower the barrier of entry. It will also establishing how you and your team creates modules. Don't choose something related to an in-flight company project. The last thing you want to do is slow down the delivery of a product.
 
 Here are a few Terraform module ideas:
 * a droplet and dns record
@@ -53,7 +53,7 @@ Terraform modules belong in a git repository. Whether that's github, gitlab or s
 
 ### BONUS: How do I structure Terraform modules?
 
- I split modules into two camps: 
+ I split modules into two camps:
 * vendor-specific
 * composed-services
 

@@ -5,7 +5,7 @@ date = "2021-02-12"
 +++
 
 
-![tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p4/header.jpg)
+![tacos](https://static.taccoform.com/static/post/tts_p4/header.jpg)
 
 
 # Overview
@@ -15,12 +15,12 @@ At some point you'll want to allow others to build off of the terraform work you
 ## Lesson 4
 
 In this post we'll go over:
-* What's a statefile? 
+* What's a statefile?
 * Where to host your statefile
 * How to configure `statefile` in Terraform
 
 
-### What's a statefile? 
+### What's a statefile?
 
 In Terraform, a statefile is a file which is used to store information about what has been provisioned in your current workspace (and/or directory.) Terraform uses this stored information in conjunction with the Terraform resource definitions that you've defined in your `.tf` files. When you run Terraform, it checks to make sure your `.tf` matches what is in your statefile. When there's a difference between the two files, terraform will try to reconcile those differences. Examples of this include:
     - Terraform sees a resource definition for a droplet in a `.tf` file, but not in the `statefile`. Terraform attempts to create the droplet
@@ -31,7 +31,7 @@ When you start a new terraform workspace and don't specify a `backend` configura
 
 ### Where to host your statefile
 
-To allow others and/or automation to use the same `statefile`, it needs to be hosted somewhere that multiple individuals can access it. 
+To allow others and/or automation to use the same `statefile`, it needs to be hosted somewhere that multiple individuals can access it.
 
 ### Self-hosting
 
@@ -68,7 +68,7 @@ We're gonna focus on using Terraform Cloud because there's building/maintenance 
 1. Go to [Terraform Cloud](https://app.terraform.io/signup/account) and create a new account
 2. Once logged in, it will ask you to confirm your email address. Go ahead, I'll wait
 3. When you click the validation link in your Terraform Cloud validation email, it will take you a screen to `Create a new organization`. Give it a name, then press `Create organization`
-4. You'll now see a `Create a new Workspace` page and given three options. It recommends `version control workfolw`, but right now we're just interested in `statefile` hosting. Choose `CLI-driven workflow` 
+4. You'll now see a `Create a new Workspace` page and given three options. It recommends `version control workfolw`, but right now we're just interested in `statefile` hosting. Choose `CLI-driven workflow`
 5. At the `Create a new Workspace` screen, enter `tf-tutorial`, then press `Create workspace`
 6. Go to the `Settings` menu on the top right corner, select `General`
 7. Change the `Execution Mode` to `local` then press `Save settings`, this means terraform cloud will only be used for `statefile` storage. If you leave it on `Remote`, Terraform Cloud will need credentials for your cloud provider to build/destroy on your behalf.

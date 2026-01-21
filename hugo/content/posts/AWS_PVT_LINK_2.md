@@ -5,7 +5,7 @@ date = "2023-02-06"
 +++
 
 
-![Tostada](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/aws_pvt_link_1/header.jpg)
+![Tostada](https://static.taccoform.com/static/post/aws_pvt_link_1/header.jpg)
 
 
 # Overview
@@ -13,7 +13,7 @@ date = "2023-02-06"
  In the previous PrivateLink post, we went through the separate resources that make up AWS PrivateLink. In this post, we will be provisioning a PrivateLink configuration which will allow resources in one VPC to connect to a web service in another VPC. You can use several different AWS services to accomplish the same goal, but PrivateLink can simplify some setups and meet security expectations with its standard one-way communication.
 
 
-![PrivateLink](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/aws_pvt_link_2/tacoform-privatelink.jpg)
+![PrivateLink](https://static.taccoform.com/static/post/aws_pvt_link_2/tacoform-privatelink.jpg)
 ## Lesson
 
 * Building Two VPCs
