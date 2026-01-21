@@ -5,7 +5,7 @@ date = "2026-01-12"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/aws_localstack/header.jpg)
+![Tacos](https://static.taccoform.com/static/post/aws_localstack/header.jpg)
 
 
 # Background

@@ -5,7 +5,7 @@ date = "2021-04-08"
 +++
 
 
-![cartoon taco](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfm_p2/header.png)
+![cartoon taco](https://static.taccoform.com/static/post/tfm_p2/header.png)
 
 
 # Overview
@@ -37,11 +37,11 @@ A terraform module is a templated verison of Terraform resource definitions, var
 
 ### Organizating Terraform Modules
 
-Terraform modules can be hosted in several ways, I prefer to host them via git and in their own module repository. 
+Terraform modules can be hosted in several ways, I prefer to host them via git and in their own module repository.
 
 1. Start by creating a new private repo named `taccoform-modules`. Since this is a private repository, any person (or machine) that wants to use your terraform modules will need read access to the repo.
 2. Create a new branch in that repo called `new-droplet-module`
-3. Create a two folders in the root of your new repository `vendors` and `tacco-corp` 
+3. Create a two folders in the root of your new repository `vendors` and `tacco-corp`
    1. `vendors` is where you'll put terraform modules from cloud providers with terraform providers
    2. `tacco-corp` is where you'll put terraform modules that are comprised of one or more vendor modules to create a composed service for our Tacco-Corp company. Think of composed services as a meal coming together like a plate of fajitas, rice, beans, and a salt-rimmed margarita. In cloud provider terms this could be a terraform module with a load-balancer, virtual machine, and database.
 4. In the vendors folder, create `digitalocean` and in that folder create a `droplet` folder.
@@ -179,7 +179,7 @@ resource "digitalocean_droplet" "vm" {
 ```
 _Note: `${count.index}` tells terraform to set the variable as the current index set by the `count` variable. This index starts at `0`, but you can do `${count.index + 1}` to make the droplet names start at `1`.
 
-* For more information on terraform variables and how to use them, check out [Taccoform Tutorial Series - Part III](https://www.taccoform.com/posts/tts_p3/) 
+* For more information on terraform variables and how to use them, check out [Taccoform Tutorial Series - Part III](https://www.taccoform.com/posts/tts_p3/)
 
 9. In Terraform 13 and newer, providers not hosted by Hashicorp need to be called out in the module. Do this by adding the stanza below to your `provider.tf` file
 
@@ -202,9 +202,9 @@ _Note: Terrform providers may have different options/parameters, check out the o
 
 ### Testing the DigitalOcean droplet module
 
-Now that you've created a new droplet terraform module, it's time to test it out! You'll want to create a new workspace/folder. 
+Now that you've created a new droplet terraform module, it's time to test it out! You'll want to create a new workspace/folder.
 
-1. Let's create a temporary workspace in the `taccoform-modules` folder called `module-testing`. Inside the `module-testing` folder we'll add another folder called `droplet-test` 
+1. Let's create a temporary workspace in the `taccoform-modules` folder called `module-testing`. Inside the `module-testing` folder we'll add another folder called `droplet-test`
 
 * Your `taccoform-modules` repo should look something like this:
 ```
@@ -220,7 +220,7 @@ taccoform-modules
             ├── droplet_variables.tf
             ├── provider.tf
             └── variables.tf
-```            
+```
 
 2. In the `droplet-test` folder, create three new files: `provider.tf`, `droplet.tf`, and `variables.tf`
 
@@ -614,7 +614,7 @@ If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
-* In the `terraform init` output, you can see that it's now pulling the module from github. 
+* In the `terraform init` output, you can see that it's now pulling the module from github.
 
 3. Now you can run `terraform apply` to confirm it's creating what you want and destroying it with `terraform destroy`
 
@@ -678,7 +678,7 @@ commands will detect it and remind you to do so if necessary.
 9. As long as you didnt reprovision the droplets, you can safely delete the `module-testing` folder and/or the `new-droplet-module` branch.
 ### In Review
 
-You've created a versioned DigitalOcean droplet module that you re-use anywhere. This is a simple module example, other modules can create many resources to interact with eachother. As a stretch goal, try to add another DigitalOcean resource to the `droplet` module and "bump" the version to `do-droplet-v1.1.0`. 
+You've created a versioned DigitalOcean droplet module that you re-use anywhere. This is a simple module example, other modules can create many resources to interact with eachother. As a stretch goal, try to add another DigitalOcean resource to the `droplet` module and "bump" the version to `do-droplet-v1.1.0`.
 
 If you get stuck at any point, check out the [taccoform-modules](https://github.com/jperez3/taccoform-modules) repo
 

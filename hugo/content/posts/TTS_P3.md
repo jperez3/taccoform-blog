@@ -5,11 +5,11 @@ date = "2020-12-13"
 +++
 
 
-![tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p3/header.jpg)
+![tacos](https://static.taccoform.com/static/post/tts_p3/header.jpg)
 
 # Overview
 
-Greetings Taccoformers! In the previous tutorial you learned how to create multiple resources with `count` and `for_each`. In _Part III_ of the _Taccoform Tutorial Series_, we'll focus on creating variables to keep our terraform code easy to work on and `DRY` (Don't Repeat Yourself).  
+Greetings Taccoformers! In the previous tutorial you learned how to create multiple resources with `count` and `for_each`. In _Part III_ of the _Taccoform Tutorial Series_, we'll focus on creating variables to keep our terraform code easy to work on and `DRY` (Don't Repeat Yourself).
 
 # Lesson 3
 
@@ -94,7 +94,7 @@ Variable naming isn't always easy, but there are a couple things that I've picke
 
 
 * If there is a variable that you want to set to a paramater in a resource definition, be sure you align the variable name to the parameter.
-    - eg.    
+    - eg.
 
 ```hcl
 resource "digitalocean_droplet" "web" {
@@ -105,9 +105,9 @@ resource "digitalocean_droplet" "web" {
 
 }
 ```
-_Notice the `droplet_` prefix, this helps when you have different resource definitions with similar parameter names._ 
+_Notice the `droplet_` prefix, this helps when you have different resource definitions with similar parameter names._
 
-* You will also have variables that will be used by multiple resource definitions. Some of these variables will be consistent across all of your resources which require them. An example of this type of variable in DigitalOcean is `region`. It's likely that you would want to build resources which work together and a common cloud provider constraint is that all complimentary resources must reside in the same geographic region. Each cloud provider has created their own shorthand for the geographic regions they've created to host your resources. 
+* You will also have variables that will be used by multiple resource definitions. Some of these variables will be consistent across all of your resources which require them. An example of this type of variable in DigitalOcean is `region`. It's likely that you would want to build resources which work together and a common cloud provider constraint is that all complimentary resources must reside in the same geographic region. Each cloud provider has created their own shorthand for the geographic regions they've created to host your resources.
     - eg.
 
 ```hcl
@@ -145,10 +145,10 @@ resource "digitalocean_loadbalancer" "public" {
   name   = "pub-lb-${var.service}-${var.env}"
   region = var.region
   ...
-  
+
 }
 ```
-_The quotes/`$`/curly brackets are necessary because some variable interpolation is happening prior to passing the value to the resource definition's `name` parameter. `droplet_image` and `region` are passed to the resource definition "as-is", so they don't require the extra formatting. You might wonder why we don't just set the interpolation (`"lb-${var.service}-${var.env}"`) as the `default` when creating the variable, but terraform doesn't allow you to do this in regular variables._ 
+_The quotes/`$`/curly brackets are necessary because some variable interpolation is happening prior to passing the value to the resource definition's `name` parameter. `droplet_image` and `region` are passed to the resource definition "as-is", so they don't require the extra formatting. You might wonder why we don't just set the interpolation (`"lb-${var.service}-${var.env}"`) as the `default` when creating the variable, but terraform doesn't allow you to do this in regular variables._
 
 ### Variable Organization
 
@@ -156,7 +156,7 @@ _The quotes/`$`/curly brackets are necessary because some variable interpolation
 
 `droplet.tf`
 ```hcl
-data "digitalocean_ssh_key" "root" { 
+data "digitalocean_ssh_key" "root" {
   name = "taccoform-tutorial"
 }
 
@@ -191,9 +191,9 @@ output "droplet_public_ips" {
 # }
 
 # output "droplet_public_ips" {
-#   value       = { 
+#   value       = {
 #     for droplet in digitalocean_droplet.web:
-#     droplet.name => droplet.ipv4_address 
+#     droplet.name => droplet.ipv4_address
 #   }
 # }
 ```
@@ -202,7 +202,7 @@ output "droplet_public_ips" {
 
 #### Variable File Organization
 
-* You can put your variable definitions in any `.tf` and the usual _"Hello World"_ Terraform tutorials will usually tell you to create two files. A `main.tf` file for all of your resource definitions and a `variables.tf` file for all of your variable definitions. Don't do this. It's not that you can't fix it later, but the organization in advance will help you a ton with understanding the components of your terraform and there are several advantages that will come later when you are troubleshooting your terraform and/or when you start to create reusable terraform modules. I like to separate resources by their type (eg. `droplets.tf`) and accompanied by a variable file (eg. `droplets_variables.tf`). 
+* You can put your variable definitions in any `.tf` and the usual _"Hello World"_ Terraform tutorials will usually tell you to create two files. A `main.tf` file for all of your resource definitions and a `variables.tf` file for all of your variable definitions. Don't do this. It's not that you can't fix it later, but the organization in advance will help you a ton with understanding the components of your terraform and there are several advantages that will come later when you are troubleshooting your terraform and/or when you start to create reusable terraform modules. I like to separate resources by their type (eg. `droplets.tf`) and accompanied by a variable file (eg. `droplets_variables.tf`).
 
 1. Create a new `droplet_variables.tf` file next to your `droplet.tf` file.
 2. Take a look at the `web` resource definition in your `droplets.tf` and take note of the parameters that area strings or integers
@@ -226,7 +226,7 @@ variable "droplet_count" {
 
 4. `image` is a parameter which is specific to the droplet creation, so the variable belongs with other droplet variables in `droplet_variables.tf`
   - Under the `count` variable definition, create a new variable definition for `droplet_image` in `droplet_variables.tf`:
-  
+
 ```hcl
 variable "droplet_image" {
   description = "the base image/OS to use for provisioning the droplet"
@@ -236,7 +236,7 @@ variable "droplet_image" {
 _Notice how the default value was pulled directly from the value assigned to `image` in the droplet resource definition_
 
 5. `name` is an interesting one because it's using variable interpolaion because of the count paramater and because it represents multiple variables, some that can be used by other resource definitions.
- - `web` represents a node/droplet/vm type. 
+ - `web` represents a node/droplet/vm type.
  - `burrito` represents a unique service and/or application name that can help group related resources.
  - `prod` represents a unique environment/stage name shared by adjacent resources.
 ```
@@ -246,7 +246,7 @@ _Notice how the default value was pulled directly from the value assigned to `im
                |                     |        |
                V                     V        V
             Node Type - #   -     Service - Environment
-                                 
+
 ```
 6. Create a new `droplet_node_type` variable definition in the `droplet_variables.tf` file
 
@@ -257,7 +257,7 @@ variable "droplet_node_type" {
 }
 ```
 
-7. For the next string `burrito`, which is the service and/or application name, you will need to create a variable file for variables that are common among all resources. Create a `variables.tf` file for these variables. You're probably rolling your eyes right now because earlier I told you to not use `variables.tf`. Context is important here, in that previous scenario you'd be putting EVERY variable definition in one file. In this scenario, you'll just be storing a few variables in the `variables.tf` file. This file name also isn't set in stone, you could use any `.tf` name tha makes sense to you. 
+7. For the next string `burrito`, which is the service and/or application name, you will need to create a variable file for variables that are common among all resources. Create a `variables.tf` file for these variables. You're probably rolling your eyes right now because earlier I told you to not use `variables.tf`. Context is important here, in that previous scenario you'd be putting EVERY variable definition in one file. In this scenario, you'll just be storing a few variables in the `variables.tf` file. This file name also isn't set in stone, you could use any `.tf` name tha makes sense to you.
 
 `variables.tf`
 ```hcl
@@ -358,9 +358,9 @@ resource "digitalocean_droplet" "web" {
 ```
 3. Replace the `image` parameter value with the `droplet_image` variable you created
   - eg. `image = var.droplet_image`
-4. Moving on to the `name` paramter, it requires a little bit more syntax because it will be doing a bit of interpolation or manipulation of the string prior to sending the request to DigitalOcean. 
+4. Moving on to the `name` paramter, it requires a little bit more syntax because it will be doing a bit of interpolation or manipulation of the string prior to sending the request to DigitalOcean.
   - Replace `web` with `${var.droplet_node_type}`. the `$` and curly brackets are required when performing variable interpolation. If you don't put the `$` and curl brackets around the variable, interpret that literally and you'll end up with a droplet named `var.droplet_node_type0-burrito-prod`
-  - Replace `burrito` with `${var.service}` 
+  - Replace `burrito` with `${var.service}`
   - Replace `prod` with `${var.env}`
   - While you are at it, perform the previous three steps on the `user_data` parameter in the `web` droplet's resource definition
 5. Replace the `region` parameter's value to the `region` variable you defined earlier
@@ -390,7 +390,7 @@ resource "digitalocean_droplet" "web" {
 
 #### Adding a Load Balancer
 
-* At some point your application will become super popular and you're on your way to becoming a millionaire, but first you need to make sure your application can scale. Adding a load balancer in front of your droplets will allow you to add more droplets as your traffic increases. In the default configuration, a load balancer will send traffic in a _round-robin_ fashion to each of your droplets. If you configure _round-robin_ with three droplets, the load balancer will send the first request to the first droplet, second request to the second droplet, third request to the third droplet, fourth request to the first droplet, fifth request to the second droplet, etc, etc. 
+* At some point your application will become super popular and you're on your way to becoming a millionaire, but first you need to make sure your application can scale. Adding a load balancer in front of your droplets will allow you to add more droplets as your traffic increases. In the default configuration, a load balancer will send traffic in a _round-robin_ fashion to each of your droplets. If you configure _round-robin_ with three droplets, the load balancer will send the first request to the first droplet, second request to the second droplet, third request to the third droplet, fourth request to the first droplet, fifth request to the second droplet, etc, etc.
 
 1. Create `loadbalancer.tf` and `loadbalancer_variables.tf` in `tutorial-3>app`
   - Your directory should look like this now:
@@ -405,7 +405,7 @@ resource "digitalocean_droplet" "web" {
 ├── templates
 │   └── user_data_nginx.yaml
 └── variables.tf
-```  
+```
 2. Open the `loadbalancer.tf` file, paste in the following, and save it:
 
 ```hcl
@@ -441,7 +441,7 @@ _This was pulled directly from the terraform documentations for DigitalOcean's [
 ```hcl
 variable "lb_fr_entry_port_http" {
     description = "the TCP port which outside users are allowed to connect to on the load balancer"
-    default     = 80 
+    default     = 80
 }
 
 variable "lb_fr_entry_protocol_http" {
@@ -456,7 +456,7 @@ variable "lb_fr_target_port_http" {
 
 variable "lb_fr_target_protocol_http" {
     description = "after the initial connection to the load balancer, request will be forwarded as this protocol on a droplet"
-    default     = "http" 
+    default     = "http"
 }
 ```
 _Note: Try to create descriptions that are more verbose to help you with understanding the shortened variable names_
@@ -658,7 +658,7 @@ lb-pub-ip = "4.5.6.7"
 2. Remove all the droplets without destroying the load balancer: `terraform plan -var 'droplet_count=0'`
   - _This is great for iterating over changes to the user data provisioning script_
 3. Change the environment: `terraform plan -var 'env=stg'`
-4. You can also override multiple variables by creating a `.tfvars` 
+4. You can also override multiple variables by creating a `.tfvars`
 
 `custom.tfvars`
 ```hcl
@@ -666,10 +666,10 @@ droplet_count = 1
 service       = "tacos"
 
 ```
-_Now run `terraform plan -var-file="custom.tfvars"` and review how it changes the infrastructure._ 
+_Now run `terraform plan -var-file="custom.tfvars"` and review how it changes the infrastructure._
 
 
-5. For fun, run `terraform apply -var 'droplet_node_type=carneasada'` 
+5. For fun, run `terraform apply -var 'droplet_node_type=carneasada'`
 
 * After a few minutes, browse to the `lb-pub-ip` and you should see how the page has changed. Refreshing the page multiple times shows how the traffic is being distributed to each droplet.
 
@@ -682,17 +682,17 @@ _Now run `terraform plan -var-file="custom.tfvars"` and review how it changes th
 
 ## In Review
 
-![load_balanced_application_on_droplets](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p3/load_balanced_application_on_droplets.png)
+![load_balanced_application_on_droplets](https://static.taccoform.com/static/post/tts_p3/load_balanced_application_on_droplets.png)
 
 * You've learned how to create variables and the different types of variables you can define
 * You learned how to use variables in resource definitions
 * You reused variables (eg. env, service, region)
-* You created a load balanced application 
+* You created a load balanced application
 * You learned how to override default variable values
 
 
 
-## Conclusion 
+## Conclusion
 
 * Variables can be difficult to name and they eat up a bunch of your time, but it's a worthy investment in the long run. What you have now is reuseable code which can be copied to other terraform workspaces. You are also a few short steps away from creating a terraform module.
 

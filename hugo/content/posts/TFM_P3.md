@@ -5,12 +5,12 @@ date = "2021-05-05"
 +++
 
 
-![Nachos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfm_p3/header.jpg)
+![Nachos](https://static.taccoform.com/static/post/tfm_p3/header.jpg)
 
 
 # Overview
 
-You've started building out terraform modules to help keep your Terraform workspaces DRY, but you've noticed that your terraform workspaces are filled with modules and you still have to remember how they all wire up together. In this post we'll go over how to create easy to deploy composed services so that anyone on your team can deploy services without needing to know how the individual resources interact with each other.  
+You've started building out terraform modules to help keep your Terraform workspaces DRY, but you've noticed that your terraform workspaces are filled with modules and you still have to remember how they all wire up together. In this post we'll go over how to create easy to deploy composed services so that anyone on your team can deploy services without needing to know how the individual resources interact with each other.
 
 ## Lesson
 
@@ -21,7 +21,7 @@ You've started building out terraform modules to help keep your Terraform worksp
 
 ### Terraform Module Review
 
-In the previous [post](https://www.taccoform.com/posts/tfm_p2/), I brought up two types of modules: vendor specific and composed services. Vendor specific modules are smaller modules which are focused on creating resources from a single provider. Think of vendor specific modules as consistent/repeatable instructions to perform a specific task like grilling chicken. Composed services are the combining smaller vendor specific modules into one functional service. Think of composed services as an order of nachos. Nachos are the combination of multiple layers and/or ingredients. But be careful with how many layers and ingredients you add, your chicken nachos (and terraform modules) can become a soggy mess. 
+In the previous [post](https://www.taccoform.com/posts/tfm_p2/), I brought up two types of modules: vendor specific and composed services. Vendor specific modules are smaller modules which are focused on creating resources from a single provider. Think of vendor specific modules as consistent/repeatable instructions to perform a specific task like grilling chicken. Composed services are the combining smaller vendor specific modules into one functional service. Think of composed services as an order of nachos. Nachos are the combination of multiple layers and/or ingredients. But be careful with how many layers and ingredients you add, your chicken nachos (and terraform modules) can become a soggy mess.
 
 #### Vendor Specific Modules
 
@@ -40,7 +40,7 @@ In the previous [post](https://www.taccoform.com/posts/tfm_p2/), I brought up tw
 ### Using Vendor Modules to create Composed Services
 
 
-In the previous post, we created a droplet terraform module (vendor specific module) and I've created a load balancer terraform module to show you how we can have those two modules come together as a composed service. We'll call this composed service "nachos." 
+In the previous post, we created a droplet terraform module (vendor specific module) and I've created a load balancer terraform module to show you how we can have those two modules come together as a composed service. We'll call this composed service "nachos."
 
 
 1. Create a new github repository called `taccoform-modules` (if you haven't already) and create a new branch called `nachos-module`
@@ -220,7 +220,7 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-* In the module initialization step, you will see that it's using the relative path to get instructions for the nachos module and then the nachos module is like "hey, I actually need these vendor-specific modules. I have to reach out to github to retrieve them" 
+* In the module initialization step, you will see that it's using the relative path to get instructions for the nachos module and then the nachos module is like "hey, I actually need these vendor-specific modules. I have to reach out to github to retrieve them"
 
 4. Run `terraform plan` and you should see the output below:
 
@@ -521,7 +521,7 @@ With testing out of the way, we're ready to promote and version the `nachos` mod
 
 ### In Review
 
-In this post, we learned what the hell a composed service is, how to create one and how to version it. Where do we go from here? How do I deploy this thing? How do I hand this off to someone else on my team? In the next post, we'll go over how to document your modules so that it's easy for others to pick up and for you to remember how to use it when you forget 6 months from now. 
+In this post, we learned what the hell a composed service is, how to create one and how to version it. Where do we go from here? How do I deploy this thing? How do I hand this off to someone else on my team? In the next post, we'll go over how to document your modules so that it's easy for others to pick up and for you to remember how to use it when you forget 6 months from now.
 
 Code for this post can be found in the [taccoform-modules](https://github.com/jperez3/taccoform-modules) repo.
 

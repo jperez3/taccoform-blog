@@ -5,30 +5,30 @@ date = "2021-11-09"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/pkr_p1/header.jpg)
+![Tacos](https://static.taccoform.com/static/post/pkr_p1/header.jpg)
 
 
 # Overview
 
-The year is 2021 and you're still building virtual machines. Yes, you read that right, but it's not always a bad thing. There are few scenarios where you might consider using a virtual machine over a container (or function.) Maybe AWS doesn't provide a hosted solution for the technology you want to use, maybe you want to do multi-cloud and the cloud provider's offerings are too different to manage. Packer can help you build and maintain custom virtual machine images. 
+The year is 2021 and you're still building virtual machines. Yes, you read that right, but it's not always a bad thing. There are few scenarios where you might consider using a virtual machine over a container (or function.) Maybe AWS doesn't provide a hosted solution for the technology you want to use, maybe you want to do multi-cloud and the cloud provider's offerings are too different to manage. Packer can help you build and maintain custom virtual machine images.
 
 ## Lesson
 
 * What is Packer?
 * Why Should I Care About Packer?
-* Security Hurdles 
+* Security Hurdles
 * Packer Files And Components
-* Packer Commands 
-* Packer Builds  
+* Packer Commands
+* Packer Builds
 
 
-### What is Packer? 
+### What is Packer?
 
-[Packer](https://www.packer.io/) is brought to you by Hashicorp, the same people who brought you Terraform. The link between these two products might be a little loose, but can become a superpower when combined. Packer also uses Hashicorp's [HCL2](https://www.terraform.io/docs/language/index.html) (Hashicorp Configuration Language V2) which should feel similar to writing Terraform code. Packer allows you to build configurations on top of existing virtual machine images. In our case, we're talking about adding additional configuration to Amazon Linux 2 [AMIs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html). Packer builds AMIs by provisioning an instance on your behalf, uses ssh to remote into the instance and configure it based on your specifications. When the configuration completes, packer shuts down the instance, turns it into an AMI and then does a bit of clean up. 
+[Packer](https://www.packer.io/) is brought to you by Hashicorp, the same people who brought you Terraform. The link between these two products might be a little loose, but can become a superpower when combined. Packer also uses Hashicorp's [HCL2](https://www.terraform.io/docs/language/index.html) (Hashicorp Configuration Language V2) which should feel similar to writing Terraform code. Packer allows you to build configurations on top of existing virtual machine images. In our case, we're talking about adding additional configuration to Amazon Linux 2 [AMIs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html). Packer builds AMIs by provisioning an instance on your behalf, uses ssh to remote into the instance and configure it based on your specifications. When the configuration completes, packer shuts down the instance, turns it into an AMI and then does a bit of clean up.
 
-### Why Should I Care About Packer? 
+### Why Should I Care About Packer?
 
-Investing in Packer will bring you closer to immutable infrastructure which is a fancy way of saying you'll have the ability to destroy an instance and not freak out about it. Rebuilding a broken/missing/deleted instance is fast and easy because you baked most of your configuration into a custom AMI. I say most of your configuration because you should not store sensitive information like secrets in your custom AMI. 
+Investing in Packer will bring you closer to immutable infrastructure which is a fancy way of saying you'll have the ability to destroy an instance and not freak out about it. Rebuilding a broken/missing/deleted instance is fast and easy because you baked most of your configuration into a custom AMI. I say most of your configuration because you should not store sensitive information like secrets in your custom AMI.
 
 
 ### Security Hurdles
@@ -41,9 +41,9 @@ The default behavior for Packer is to provision a keypair (for ssh access), inst
 
 Packer uses HCL2 just like Terraform. If you've written Terraform code, you know the files end in `.tf`, so Packer files end in `.pkr`. **LOL** that's not the case. Packer files end with `.pkr.hcl`. I recommend taking some time to think about how you want to organize your Packer files, rather than throwing everything into something like `main.pkr.hcl`. The two major components of Packer are `builds` and `sources`, so that might be a good line in the sand for file organization.
 
-* Source: a code block which tells Packer where to start which is most likely a cloud provider and how to connect to the instance/droplet/vm for additional configuration 
+* Source: a code block which tells Packer where to start which is most likely a cloud provider and how to connect to the instance/droplet/vm for additional configuration
 
-* Build: a code block which tells packer to invoke a defined source block and run additional configuration on that intance/droplet/vm via provisioners. You can use bash as a provisioner, but Packer also supports configuration management tools like `ansible` 
+* Build: a code block which tells packer to invoke a defined source block and run additional configuration on that intance/droplet/vm via provisioners. You can use bash as a provisioner, but Packer also supports configuration management tools like `ansible`
 
 
 
@@ -54,7 +54,7 @@ Packer uses HCL2 just like Terraform. If you've written Terraform code, you know
 ```hcl
 source "amazon-ebs" "linux" {
 
-  # AWS AMI data source lookup 
+  # AWS AMI data source lookup
   source_ami_filter {
     filters = {
       name                = "amzn2-ami-hvm-*-x86_64-ebs"
@@ -88,7 +88,7 @@ source "amazon-ebs" "linux" {
     PackerTimestamp = regex_replace(timestamp(), "[- TZ:]", "")
     Service         = "burrito"
   }
-} 
+}
 ```
 _Note: It's a good practice to included the `timestamp` in the Packer AMI name to establish a unique naming convention. This will prevent any naming collision between builds and help you diagnose issues when things go wrong._
 
@@ -109,22 +109,22 @@ build {
 
 }
 ```
-_The `build` block invokes a `source` or multiple `source` blocks and then runs additional configuration based on the defined `provisioner` sub-blocks_ 
+_The `build` block invokes a `source` or multiple `source` blocks and then runs additional configuration based on the defined `provisioner` sub-blocks_
 
 
-### Packer Commands 
+### Packer Commands
 
 
 Packer is similar to Terraform in that executed commands search the current working directory for configuration files and it uses the command plus subcommand format to run. Here are some of the basic commands to get going:
 
-* `packer init` - intitializes packer plugins. This is similar to how Terraform intializes the configured providers 
+* `packer init` - intitializes packer plugins. This is similar to how Terraform intializes the configured providers
 * `packer validate` - validates packer configuration files. This is similar to Terraform's validate subcommand and checks for syntax/configuration issues.
-* `packer build` - kicks off the packer build process. The build command is like running Terraform apply with the `-auto-approve` flag to bypass the user provided input. 
+* `packer build` - kicks off the packer build process. The build command is like running Terraform apply with the `-auto-approve` flag to bypass the user provided input.
 
 ### Packer Builds
 
 
-Now that we've gone over the basics, it's time to get our hands dirty and start building some AMIs. We'll be using the same configuration used for `awscli` to provision a packer image with [AWS System Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) (yes it's a long and ridiculous name for an otherwise cool tool.) 
+Now that we've gone over the basics, it's time to get our hands dirty and start building some AMIs. We'll be using the same configuration used for `awscli` to provision a packer image with [AWS System Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html) (yes it's a long and ridiculous name for an otherwise cool tool.)
 
 #### Pre-Flight
 
@@ -153,8 +153,8 @@ You thought there would be no terraform in this post, I did too. It turns out th
 5. Verify that both variables were set:
   - `echo $PKR_VAR_vpc_id`
   - `echo $PKR_VAR_subnet_id`
-  
-**This Terraform will create a small increase on your AWS bill, be sure to remove these resources after you're done testing.**  
+
+**This Terraform will create a small increase on your AWS bill, be sure to remove these resources after you're done testing.**
 
 
 #### Packer
@@ -172,8 +172,8 @@ Now on to the main course, you are now ready to build your first Amazon AMI with
   * Waiting for SSH to respond over AWS Session Manager
   * Running any defined provisioners
   * Stopping instance
-  * Creating AMI from configured instance 
-  * Deleting instance 
+  * Creating AMI from configured instance
+  * Deleting instance
 
 * You might get an error like the one below, but the build will complete successfully and produce an AMI:
 
@@ -207,7 +207,7 @@ data "aws_ami" "burrito" {
     values = ["burrito"]
   }
 
-  owners = [data.aws_caller_identity.current.account_id] # your account id 
+  owners = [data.aws_caller_identity.current.account_id] # your account id
 }
 
 resource "aws_instance" "burrito" {
@@ -225,7 +225,7 @@ resource "aws_instance" "burrito" {
 
 ### In Review
 
-Packer is a great tool for pre-baking images so they can be provisioned more quickly and easily replaced. Using Packer with AWS Session Manager feels like a welcome cheat code and I hope this tutorial helps you on your cloud journey. 
+Packer is a great tool for pre-baking images so they can be provisioned more quickly and easily replaced. Using Packer with AWS Session Manager feels like a welcome cheat code and I hope this tutorial helps you on your cloud journey.
 
 
 ---

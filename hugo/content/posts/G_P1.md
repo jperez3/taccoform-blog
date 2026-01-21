@@ -5,7 +5,7 @@ date = "2023-08-14"
 +++
 
 
-![Chilaquiles](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/g_p1/header.jpg)
+![Chilaquiles](https://static.taccoform.com/static/post/g_p1/header.jpg)
 
 
 ### Moving Taccoform

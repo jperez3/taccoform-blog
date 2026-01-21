@@ -5,7 +5,7 @@ date = "2021-06-17"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p1/header.jpg)
+![Tacos](https://static.taccoform.com/static/post/tfg_p1/header.jpg)
 
 
 # Overview
@@ -18,18 +18,18 @@ Terraform is a great tool for managing infrastructure, but let's be honest, some
 * What's a Terraform Import?
 * When Should I Use Terraform Import?
 * How do I use a terraform import?
- 
+
 ### What's a Terraform Import?
 
-Terraform import is a subcommand that allows you to bring existing resources into your current terraform workspace's statefile. These resources could have been created by clicking through a GUI or via Terraform in another workspace. By defining a resource definition and importing the cloud resource (eg droplet), you will be able to manage/track that resource in the future via terraform. 
+Terraform import is a subcommand that allows you to bring existing resources into your current terraform workspace's statefile. These resources could have been created by clicking through a GUI or via Terraform in another workspace. By defining a resource definition and importing the cloud resource (eg droplet), you will be able to manage/track that resource in the future via terraform.
 
-### When Should I Use Terraform Import? 
+### When Should I Use Terraform Import?
 
 There are various reasons why you might want to use the terraform resources:
 * To start tracking resources that are not in terraform
 * Consolidate related resources into a single terraform workspace
 * Separate unrelated resources into multiple workspaces to limit the blast radius when problems occur
-* Changing/upgrading a terraform module which might trigger a destroy of critical infrastructure 
+* Changing/upgrading a terraform module which might trigger a destroy of critical infrastructure
 
 
 ### How Do I Use Terraform Import?
@@ -336,7 +336,7 @@ your Terraform state and will henceforth be managed by Terraform.
 ```
 12. Now run `terraform plan` and you shouldn't see any changes. In some scenarios you will be prompted for changes because a parameter set on the old workspace's resource definition that isn't present on the new workspace's resource definition. You will likely have to fill in those paramaters and play whack-a-mole until your `terraform plan` comes back clean.
 
-13. Clean up your workspace so that you aren't billed for the droplet by running `terraform destroy` 
+13. Clean up your workspace so that you aren't billed for the droplet by running `terraform destroy`
 
 _If you ran into any issues with the terraform files, they can be found [here](https://github.com/jperez3/taccoform-tutorial/tree/main/tutorial-import)_
 

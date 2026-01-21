@@ -5,7 +5,7 @@ date = "2022-12-07"
 +++
 
 
-![Ceviche](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/aws_pvt_link_1/header.jpg)
+![Ceviche](https://static.taccoform.com/static/post/aws_pvt_link_1/header.jpg)
 
 
 # Overview

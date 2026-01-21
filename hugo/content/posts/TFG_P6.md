@@ -5,7 +5,7 @@ date = "2022-11-16"
 +++
 
 
-![Tacos](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tfg_p6/header.jpg)
+![Tacos](https://static.taccoform.com/static/post/tfg_p6/header.jpg)
 
 
 # Overview

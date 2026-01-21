@@ -5,7 +5,7 @@ date = "2022-11-09"
 +++
 
 
-![Tortillas](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tf_wrapper_p1/header.jpg)
+![Tortillas](https://static.taccoform.com/static/post/tf_wrapper_p1/header.jpg)
 
 
 # Overview

@@ -2,24 +2,24 @@
 title =  "Taccoform Tutorial Series - Part I"
 tags = ["terraform", "tutorial", "digitalocean", "terraform13"]
 date = "2020-10-21"
-banner = "https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg"
+banner = "https://static.taccoform.com/static/post/tts_p1/header.jpg"
 
 +++
 
 
- ![taco](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/header.jpg)
+ ![taco](https://static.taccoform.com/static/post/tts_p1/header.jpg)
 
 
 # Overview
 
-You've reviewed the [CNCF Landscape](https://landscape.cncf.io/) and have decided that you need to start somewhere. You close your eyes and randomly click one of the logos. You open your eyes and see a weird `T` logo with the name "Hashicorp Terraform." This is how I got started with Terraform. 
+You've reviewed the [CNCF Landscape](https://landscape.cncf.io/) and have decided that you need to start somewhere. You close your eyes and randomly click one of the logos. You open your eyes and see a weird `T` logo with the name "Hashicorp Terraform." This is how I got started with Terraform.
 
-After 4 years of mostly learning what not to do, I decided to help others on their cloud journey. If you know how to use github and a little bit of bash, I will teach you how to provision servers in the cloud with Infrastructure as Code. We're going to be working with DigitalOcean, but the principles learned here can be used across all cloud providers. This is the first entry in the Taccoform Tutorial Series. 
+After 4 years of mostly learning what not to do, I decided to help others on their cloud journey. If you know how to use github and a little bit of bash, I will teach you how to provision servers in the cloud with Infrastructure as Code. We're going to be working with DigitalOcean, but the principles learned here can be used across all cloud providers. This is the first entry in the Taccoform Tutorial Series.
 
 
 ## Lesson 1
 
-Alright, first we need to do a bit of setup. We need to create a DigitalOcean account, configure an SSH key, and fork a repo. After that we can start talking about terraform, build something, and destroy it when we're done. 
+Alright, first we need to do a bit of setup. We need to create a DigitalOcean account, configure an SSH key, and fork a repo. After that we can start talking about terraform, build something, and destroy it when we're done.
 
 
 ### Pre-Flight
@@ -29,7 +29,7 @@ Alright, first we need to do a bit of setup. We need to create a DigitalOcean ac
 1. Create a DigitalOcean account [DigitalOcean Free Credit Referral Link](https://m.do.co/c/d26a4fc22a12)
 2. Create a _Personal Access Token_ (DigitalOcean Control Panel: Left pane>Account>API>Personal access tokens>Generate New Token)
 3. Give the _Personal Access Token_ **Read** and **Write** access
-4. Add this token to your password manager. Please look into a password manager if you don't currently use one. 
+4. Add this token to your password manager. Please look into a password manager if you don't currently use one.
 
 
 #### Create new SSH key for Digital Ocean droplets
@@ -45,7 +45,7 @@ Alright, first we need to do a bit of setup. We need to create a DigitalOcean ac
 
 #### Fork and clone the Taccoform Tutorial repo
 1. Go to the [Taccoform Tutorial Repo](https://github.com/jperez3/taccoform-tutorial), fork the repo and clone it to your computer.
-2. Open the repo with your favorite IDE. If you don't have one, I'd suggest taking a look at Microsoft's VSCode. It's a pretty nice product and free. 
+2. Open the repo with your favorite IDE. If you don't have one, I'd suggest taking a look at Microsoft's VSCode. It's a pretty nice product and free.
 
 
 ### Terraform Files
@@ -53,7 +53,7 @@ Alright, first we need to do a bit of setup. We need to create a DigitalOcean ac
 Terraform file basics:
 * Terraform files end with `.tf`
 * Terraform will only read `.tf` files that live the same directory (usually)
-* Terraform files contain a mix of variables, data resource lookups, and resource definitions. 
+* Terraform files contain a mix of variables, data resource lookups, and resource definitions.
 
 #### Create a Secrets file
 
@@ -79,7 +79,7 @@ The instructions in the `provider.tf` file is a heads up of sorts which tells Te
 
 #### User Data template
 
-In the templates folder you will find a user data file. This file is passed to the droplet (or virtual machine) as instructions on how to configure the operating system after it boots up. This might be the easiest way to automatically configure a droplet, but there are other methods which have their own sets of pros and cons. 
+In the templates folder you will find a user data file. This file is passed to the droplet (or virtual machine) as instructions on how to configure the operating system after it boots up. This might be the easiest way to automatically configure a droplet, but there are other methods which have their own sets of pros and cons.
 
 `user_data_nginx.yaml`
 ```
@@ -100,13 +100,13 @@ runcmd:
 | `packages`             | A heading to install linux applications on the droplet                         |
 | `runcmd`               | Allows you to run arbitrary bash commands during the first boot of the droplet |
 
-Here are a few resources that dig deeper into `cloud-config`/`cloud-init`/`user-data`: 
+Here are a few resources that dig deeper into `cloud-config`/`cloud-init`/`user-data`:
 
 * [An Introduction to Cloud-Config Scripting](https://www.digitalocean.com/community/tutorials/an-introduction-to-cloud-config-scripting)
 * [cloud-init documentation](https://cloudinit.readthedocs.io/en/latest/)
 
 
-#### Droplet file 
+#### Droplet file
 
 As you can see, the `droplet.tf` file is empty right now, you will now start to write your first bit of terraform.
 
@@ -117,7 +117,7 @@ In the pre-flight, you created an SSH key and uploaded it to DigitalOcean. If yo
 _Note: don't copy/paste the code below. Write it on your own to get a feel for writing Terraform_
 
 ```hcl
-data "digitalocean_ssh_key" "root" { 
+data "digitalocean_ssh_key" "root" {
   name = "taccoform-tutorial"
 }
 ```
@@ -243,7 +243,7 @@ commands will detect it and remind you to do so if necessary.
 ```
 
 3. Now run `terraform plan`
-  - Sample output below: 
+  - Sample output below:
 
 ```hcl
 Refreshing Terraform state in-memory prior to plan...
@@ -315,7 +315,7 @@ Do you want to perform these actions?
   Terraform will perform the actions described above.
   Only 'yes' will be accepted to approve.
 
-  Enter a value: 
+  Enter a value:
 ```
 
 5. If it all looks good, confirm by entering `yes` and pressing enter
@@ -346,7 +346,7 @@ droplet_public_ip = 1.2.3.4
   - Now you'll be prompted for the passphrase you created for the `do_ed25519` key
   - After submitting the passphrase, you should see the prompt: `root@web-burrito-prod:~#`
   - You can review the output of the `user_data` script by running `cat /var/log/cloud-init-output.log`
-  - Once you're done, run `exit` 
+  - Once you're done, run `exit`
 
 * You can also log into the [DigitalOcean](https://cloud.digitalocean.com/login) control panel to check out your droplet
 
@@ -405,11 +405,11 @@ Do you really want to destroy all resources?
   Terraform will destroy all your managed infrastructure, as shown above.
   There is no undo. Only 'yes' will be accepted to confirm.
 
-  Enter a value: 
+  Enter a value:
 ```
-_The output shows you what will be destroyed. We're expecting to destroy 1 droplet resource and that's what it is telling us._ 
+_The output shows you what will be destroyed. We're expecting to destroy 1 droplet resource and that's what it is telling us._
 
-2. Type `yes` and press enter to start the destruction 
+2. Type `yes` and press enter to start the destruction
   - Your output should be similar to the output below:
 
 ```hcl
@@ -428,20 +428,20 @@ After the `terraform destroy` has finished, don't forget to commit your changes 
 
 ### In Review
 
-![droplet_creation_with_terraform](https://taccoform-blog.sfo2.digitaloceanspaces.com/static/post/tts_p1/droplet_creation_with_terraform.png)
+![droplet_creation_with_terraform](https://static.taccoform.com/static/post/tts_p1/droplet_creation_with_terraform.png)
 
 * Set up your DigitalOcean account
 * Configured a droplet SSH key
 * Learned about `.tf` files
-* Created your first resource definition 
+* Created your first resource definition
 * Installed Terraform
 * Learned about Terraform init/plan/apply
 * Provisioned via the Terraform command
 * SSH'd into the newly provisioned droplet
 * Destroyed the droplet
-  
+
 
 Check out the next entry in the [Taccoform Tutorial Series](https://www.taccoform.com/posts/tts_p2/), which will cover `count`, `for_each`, and how to keep your code "DRY"
 
 ---
-_Feel free to reach out on twitter via [@taccoform](https://twitter.com/taccoform) for questions and/or feedback on this post_  
+_Feel free to reach out on twitter via [@taccoform](https://twitter.com/taccoform) for questions and/or feedback on this post_
